@@ -27,7 +27,7 @@ The project is developed as a learning-oriented but production-style Java/Spring
 ---
 
 ## Technology Stack
-- Java 17
+- Java 25
 - Spring Boot 3
 - REST API
 - Spring Data JPA (Hibernate)
