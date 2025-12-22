@@ -1,3 +1,4 @@
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ public class Invoice {
     private final LocalDate issueDate = LocalDate.now(BUSINESS_ZONE);
     private LocalDate dueDate = issueDate.plusDays(14);
 
-    private double paidAmount = 0.0;
+    private BigDecimal paidAmount = BigDecimal.ZERO;
 
     public Invoice(String invoiceNumber, Customer customer){
         this.invoiceNumber = invoiceNumber;
@@ -47,25 +48,30 @@ public class Invoice {
         }
     }
 
-    public double getTotalAmount(){
-        double total = 0;
+    public BigDecimal getTotalAmount(){
+        BigDecimal total = BigDecimal.ZERO;
         for (InvoiceItem  item : items){
-            total += item.getTotal();
+            total = total.add(item.getTotal());
         }
         return total;
     }
 
-    public void pay(double amount){
+    public void pay(BigDecimal amount){
         ensureNotCancelled();
         ensureNotPaid();
         if (status == InvoiceStatus.DRAFT){
             throw new IllegalStateException("Cannot pay a DRAFT invoice. Send it first");
         }
-        if (amount <= 0){
+
+        if (amount == null){
+            throw new IllegalArgumentException("The amount must not be null");
+        }
+
+        if (amount.compareTo(BigDecimal.ZERO) <= 0){
             throw new IllegalStateException("Payment amount must be positive");
         }
 
-        paidAmount += amount;
+        paidAmount = paidAmount.add(amount);
 
         if (isFullyPaid()){
             status = InvoiceStatus.PAID;
@@ -84,21 +90,21 @@ public class Invoice {
         return status;
     }
     public boolean isFullyPaid(){
-        return paidAmount >= getTotalAmount();
+        return paidAmount.compareTo(getTotalAmount()) >= 0;
     }
 
-    public double getPaidAmount(){
+    public BigDecimal getPaidAmount(){
         return paidAmount;
     }
 
-    public double getOpenAmount(){
-        double open = getTotalAmount() - paidAmount;
-        return Math.max(open, 0.0);
+    public BigDecimal getOpenAmount(){
+        BigDecimal open = getTotalAmount().subtract(paidAmount);
+        return open.max(BigDecimal.ZERO);
     }
 
-    public double getOverpaidAmount(){
-        double overpaid = paidAmount - getTotalAmount();
-        return Math.max(overpaid, 0.0);
+    public BigDecimal getOverpaidAmount(){
+        BigDecimal overpaid = paidAmount.subtract(getTotalAmount());
+        return overpaid.max(BigDecimal.ZERO);
     }
 
     public LocalDate getDueDate(){
