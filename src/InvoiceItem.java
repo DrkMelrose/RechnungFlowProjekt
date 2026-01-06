@@ -29,4 +29,5 @@ public class InvoiceItem {
     public BigDecimal getTotal(){
         return price.multiply(BigDecimal.valueOf(quantity)) ;
     }
+
 }
