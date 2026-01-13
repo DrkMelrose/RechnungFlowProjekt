@@ -14,6 +14,7 @@ public class CliApp {
                 case 1 -> createInvoice();
                 case 2 -> listInvoices();
                 case 3 -> showInvoice();
+                case 4 -> markInvoicePaid();
                 case 0 -> {
                     io.println("Bye!");
                     running = false;
@@ -71,9 +72,9 @@ public class CliApp {
 
         int number = io.readInt("Show details (invoice number) or  0 to back: ", 0, Integer.MAX_VALUE);
         if (number != 0){
-            Invoice inv = service.getInvoiceNumber(number);
+            Invoice inv = service.findByNumber(number);
             if(inv == null){
-                io.println("Invoice #" + number + "not found.");
+                io.println("Invoice #" + number + " not found.");
             } else {
                 printInvoiceDetails(inv);
             }
@@ -86,8 +87,8 @@ public class CliApp {
             return;
         }
 
-        int number = io.readInt("Invoice numbers to show: ", 1, Integer.MAX_VALUE);
-        Invoice invoice = service.getInvoiceNumber(number);
+        int number = io.readInt("Invoice number to show: ", 1, Integer.MAX_VALUE);
+        Invoice invoice = service.findByNumber(number);
 
         if (invoice==null){
             io.println("Invoice #" + number + " not found");
@@ -109,9 +110,26 @@ public class CliApp {
 
         int i = 1;
         for (InvoiceItem item : inv.getItems()){
-            io.println(" " + i + ") " + item.toString());
+            //io.println(" " + i + ") " + item.toString());
+            //i++;
+            io.println(" " + i + ") " + item.getDescription() +
+                    " | qty: " + item.getQuantity()
+                + " | price " + item.getPrice());
             i++;
         }
+    }
+
+    private void markInvoicePaid(){
+        if (service.isEmpty()){
+            io.println("No invoices");
+            return;
+        }
+
+        int number = io.readInt("Invoice number to mark as PAID", 1, Integer.MAX_VALUE);
+        boolean ok = service.markAsPaid(number);
+
+        if (!ok) io.println("Invoice #" + number + "not found");
+        else io.println("Invoice #" + number + "marked as PAID");
     }
 
 

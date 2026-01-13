@@ -13,13 +13,21 @@ public class InvoiceService {
         return invoice;
     }
 
-    public Invoice getInvoiceNumber(int number){
+    public Invoice findByNumber(int number){
         for (Invoice inv : invoices){
             if (inv.getIdentNumber() == number){
                 return inv;
             }
         }
         return null;
+    }
+
+    public boolean markAsPaid (int number){
+        Invoice inv = findByNumber(number);
+        if (inv == null) return false;
+
+        inv.markAsPaid();
+        return true;
     }
 
     public List<Invoice> getAll(){

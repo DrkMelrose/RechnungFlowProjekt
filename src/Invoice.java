@@ -135,6 +135,14 @@ public class Invoice {
         updateOverdueStatus();
     }
 
+    public void markAsPaid(){
+        if (status == InvoiceStatus.PAID){
+            throw new IllegalStateException("Invoice is already paid");
+        }
+
+        this.status = InvoiceStatus.PAID;
+    }
+
 
     private void ensureNotCancelled(){
         if (status == InvoiceStatus.CANCELLED){
