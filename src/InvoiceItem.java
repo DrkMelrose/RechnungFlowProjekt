@@ -1,9 +1,9 @@
 import java.math.BigDecimal;
 
 public class InvoiceItem {
-    private String description;
-    private int quantity;
-    private BigDecimal price;
+    private final String description;
+    private final int quantity;
+    private final BigDecimal price;
 
     public InvoiceItem(String description, int quantity, BigDecimal price){
         if (description == null || description.isBlank()){
@@ -28,5 +28,17 @@ public class InvoiceItem {
 
     public BigDecimal getTotal(){
         return price.multiply(BigDecimal.valueOf(quantity)) ;
+    }
+
+    public String getDescription(){
+        return description;
+    }
+
+    public int getQuantity(){
+        return quantity;
+    }
+
+    public BigDecimal getPrice(){
+        return price;
     }
 }

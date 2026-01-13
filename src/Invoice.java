@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Invoice {
-    private final String invoiceNumber;
+    private final int invoiceNumber;
     private final Customer customer;
     private InvoiceStatus status = InvoiceStatus.DRAFT;
     private final List<InvoiceItem> items = new ArrayList<>();
@@ -15,10 +15,20 @@ public class Invoice {
 
     private BigDecimal paidAmount = BigDecimal.ZERO;
 
-    public Invoice(String invoiceNumber, Customer customer){
+    public Invoice(int invoiceNumber, Customer customer){
         this.invoiceNumber = invoiceNumber;
         this.customer = customer;
+
     }
+
+    public Customer getCustomer(){
+        return customer;
+    }
+
+    public int getIdentNumber(){
+        return invoiceNumber;
+    }
+
 
     public void addItem(InvoiceItem item){
         ensureNotCancelled();
@@ -28,6 +38,10 @@ public class Invoice {
             throw new IllegalArgumentException("Item must not be null");
         }
         items.add(item);
+    }
+
+    public List<InvoiceItem> getItems(){
+        return items;
     }
 
     public void send(){
@@ -119,6 +133,14 @@ public class Invoice {
         }
         this.dueDate = dueDate;
         updateOverdueStatus();
+    }
+
+    public void markAsPaid(){
+        if (status == InvoiceStatus.PAID){
+            throw new IllegalStateException("Invoice is already paid");
+        }
+
+        this.status = InvoiceStatus.PAID;
     }
 
 
