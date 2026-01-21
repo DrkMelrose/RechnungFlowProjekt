@@ -4,7 +4,7 @@
     "name" : "gomo",
     "email" : "gomoggggg"
   },
-  "status" : "DRAFT",
+  "status" : "PAID",
   "items" : [ {
     "description" : "chopik",
     "quantity" : 2,
@@ -18,9 +18,9 @@
   } ],
   "issueDate" : [ 2026, 1, 21 ],
   "dueDate" : [ 2026, 2, 4 ],
-  "paidAmount" : 0,
+  "paidAmount" : 863,
+  "totalAmount" : 863,
+  "openAmount" : 0,
   "overpaidAmount" : 0,
-  "openAmount" : 863,
-  "fullyPaid" : false,
-  "totalAmount" : 863
+  "fullyPaid" : true
 } ]

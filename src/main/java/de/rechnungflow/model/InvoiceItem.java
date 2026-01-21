@@ -36,7 +36,7 @@ public class InvoiceItem {
         this.price = price;
     }
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public BigDecimal getTotal(){
         return price.multiply(BigDecimal.valueOf(quantity)) ;
     }

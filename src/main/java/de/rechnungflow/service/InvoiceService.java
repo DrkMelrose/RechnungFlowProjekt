@@ -4,8 +4,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.rechnungflow.model.Customer;
 import de.rechnungflow.model.Invoice;
+import de.rechnungflow.model.InvoiceStatus;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -40,7 +42,11 @@ public class InvoiceService {
         Invoice inv = findByNumber(number);
         if (inv == null) return false;
 
-        inv.markAsPaid();
+        BigDecimal total = inv.getTotalAmount();
+        inv.setPaidAmount(total);
+        inv.setStatus(InvoiceStatus.PAID);
+        saveToFile();
+
         return true;
     }
 

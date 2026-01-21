@@ -3,6 +3,7 @@ package de.rechnungflow.cli;
 import de.rechnungflow.model.Customer;
 import de.rechnungflow.model.Invoice;
 import de.rechnungflow.model.InvoiceItem;
+import de.rechnungflow.model.InvoiceStatus;
 import de.rechnungflow.service.InvoiceService;
 
 public class CliApp {
@@ -16,7 +17,7 @@ public class CliApp {
         boolean running = true;
         while(running){
             printMenu();
-            int choice = io.readInt("Choose option: ", 0, 3);
+            int choice = io.readInt("Choose option: ", 0, 4);
 
             switch (choice){
                 case 1 -> createInvoice();
@@ -36,6 +37,7 @@ public class CliApp {
         io.println("1) Create invoice");
         io.println("2) List invoices");
         io.println("3) Show invoice");
+        io.println("4) Mark invoice paid");
         io.println("0) Exit");
     }
 
@@ -137,11 +139,17 @@ public class CliApp {
             return;
         }
 
-        int number = io.readInt("Invoice number to mark as PAID", 1, Integer.MAX_VALUE);
+        for (Invoice invoice : service.getAll()){
+            printInvoiceSummary(invoice);
+        }
+
+        int number = io.readInt("Choose the number of customer", 1, Integer.MAX_VALUE);
         boolean ok = service.markAsPaid(number);
 
         if (!ok) io.println("Invoice #" + number + "not found");
-        else io.println("Invoice #" + number + "marked as PAID");
+        else{
+            io.println("Invoice #" + number + "marked as PAID");
+        }
     }
 
 

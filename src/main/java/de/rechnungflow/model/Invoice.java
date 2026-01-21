@@ -85,7 +85,7 @@ public class Invoice {
             }
         }
     }
-
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public BigDecimal getTotalAmount(){
         BigDecimal total = BigDecimal.ZERO;
         for (InvoiceItem item : items){
@@ -127,6 +127,8 @@ public class Invoice {
     public InvoiceStatus getStatus(){
         return status;
     }
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public boolean isFullyPaid(){
         return paidAmount.compareTo(getTotalAmount()) >= 0;
     }
@@ -135,6 +137,17 @@ public class Invoice {
         return paidAmount;
     }
 
+    public void setPaidAmount(BigDecimal paidAmount){
+        this.paidAmount = paidAmount;
+    }
+
+    public void setStatus(InvoiceStatus status){
+        this.status = status;
+    }
+
+
+
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public BigDecimal getOpenAmount(){
         BigDecimal open = getTotalAmount().subtract(paidAmount);
         return open.max(BigDecimal.ZERO);
