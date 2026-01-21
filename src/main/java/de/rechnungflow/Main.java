@@ -1,4 +1,6 @@
-import java.math.BigDecimal;
+package de.rechnungflow;
+
+import de.rechnungflow.cli.CliApp;
 
 public class Main {
     static void main(String[] args) {
@@ -10,12 +12,12 @@ public class Main {
 
 
 
-        //Customer customer = new Customer("Ivan Petrov", "ivan@gmail.com");
+        //de.rechnungflow.model.Customer customer = new de.rechnungflow.model.Customer("Ivan Petrov", "ivan@gmail.com");
 
-        //Invoice invoice = new Invoice("INV-01", customer);
+        //de.rechnungflow.model.Invoice invoice = new de.rechnungflow.model.Invoice("INV-01", customer);
 
-        //invoice.addItem(new InvoiceItem("Website development",1,BigDecimal.valueOf(1200)));
-        //invoice.addItem(new InvoiceItem("Hosting 1 year", 1, BigDecimal.valueOf(120)));
+        //invoice.addItem(new de.rechnungflow.model.InvoiceItem("Website development",1,BigDecimal.valueOf(1200)));
+        //invoice.addItem(new de.rechnungflow.model.InvoiceItem("Hosting 1 year", 1, BigDecimal.valueOf(120)));
 
         //System.out.println("Status: " + invoice.getStatus());
         //invoice.send();

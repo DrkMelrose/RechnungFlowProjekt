@@ -1,33 +1,53 @@
+package de.rechnungflow.model;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Invoice {
-    private final int invoiceNumber;
-    private final Customer customer;
+    private int invoiceNumber;
+    private Customer customer;
     private InvoiceStatus status = InvoiceStatus.DRAFT;
-    private final List<InvoiceItem> items = new ArrayList<>();
+    private List<InvoiceItem> items = new ArrayList<>();
     private static final ZoneId BUSINESS_ZONE = ZoneId.of("Europe/Berlin");
-    private final LocalDate issueDate = LocalDate.now(BUSINESS_ZONE);
+    private LocalDate issueDate = LocalDate.now(BUSINESS_ZONE);
     private LocalDate dueDate = issueDate.plusDays(14);
 
     private BigDecimal paidAmount = BigDecimal.ZERO;
 
-    public Invoice(int invoiceNumber, Customer customer){
+    @JsonCreator
+    public Invoice(
+            @JsonProperty("invoiceNumber") int invoiceNumber,
+            @JsonProperty("customerName") Customer customer
+    ) {
         this.invoiceNumber = invoiceNumber;
         this.customer = customer;
-
     }
 
     public Customer getCustomer(){
         return customer;
     }
 
-    public int getIdentNumber(){
+    public void setCustomer(Customer customer){
+        this.customer = customer;
+    }
+
+    public int getInvoiceNumber(){
         return invoiceNumber;
     }
+
+    public void setInvoiceNumber(int invoiceNumber){
+        this.invoiceNumber = invoiceNumber;
+    }
+
+
 
 
     public void addItem(InvoiceItem item){
@@ -42,6 +62,10 @@ public class Invoice {
 
     public List<InvoiceItem> getItems(){
         return items;
+    }
+
+    public void setInvoiceItem(List<InvoiceItem> items){
+        this.items = items;
     }
 
     public void send(){
@@ -64,7 +88,7 @@ public class Invoice {
 
     public BigDecimal getTotalAmount(){
         BigDecimal total = BigDecimal.ZERO;
-        for (InvoiceItem  item : items){
+        for (InvoiceItem item : items){
             total = total.add(item.getTotal());
         }
         return total;
@@ -123,6 +147,18 @@ public class Invoice {
 
     public LocalDate getDueDate(){
         return dueDate;
+    }
+
+    public void setLocalDate(LocalDate dueDate){
+        this.dueDate = dueDate;
+    }
+
+    public LocalDate getIssueDate(){
+        return issueDate;
+    }
+
+    public void setIssueDate(LocalDate issueDate){
+        this.issueDate = issueDate;
     }
 
     public void setDueDate(LocalDate dueDate){

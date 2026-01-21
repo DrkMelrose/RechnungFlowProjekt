@@ -1,8 +1,16 @@
+package de.rechnungflow.cli;
+
+import de.rechnungflow.model.Customer;
+import de.rechnungflow.model.Invoice;
+import de.rechnungflow.model.InvoiceItem;
+import de.rechnungflow.service.InvoiceService;
+
 public class CliApp {
     private final ConsoleIO io = new ConsoleIO();
     private final InvoiceService service = new InvoiceService();
 
     public void run(){
+        service.loadFromFile();
         io.println("=== RechnungFlow CLI ===");
 
         boolean running = true;
@@ -52,9 +60,10 @@ public class CliApp {
 
             InvoiceItem item = new InvoiceItem(title, qty, unitPrice);
             invoice.addItem(item);
+            service.saveToFile();
         }
 
-        io.println("Invoice #" + invoice.getIdentNumber() +  "created and saved in memory");
+        io.println("Invoice #" + invoice.getInvoiceNumber() +  "created and saved in memory");
 
     }
 
@@ -65,7 +74,6 @@ public class CliApp {
             return;
         }
 
-        int index = 1;
         for (Invoice inv : service.getAll()){
             printInvoiceSummary(inv);
         }
@@ -87,6 +95,10 @@ public class CliApp {
             return;
         }
 
+        for (Invoice inv : service.getAll()){
+            printInvoiceSummary(inv);
+        }
+
         int number = io.readInt("Invoice number to show: ", 1, Integer.MAX_VALUE);
         Invoice invoice = service.findByNumber(number);
 
@@ -99,11 +111,11 @@ public class CliApp {
     }
 
     private void printInvoiceSummary(Invoice inv){
-        io.println("#" + inv.getIdentNumber() + "|" + inv.getCustomer().getName() + "|" + inv.getStatus());
+        io.println("#" + inv.getInvoiceNumber() + "|" + inv.getCustomer().getName() + "|" + inv.getStatus());
     }
 
     private void printInvoiceDetails(Invoice inv){
-        io.println("===Invoice #" + inv.getIdentNumber() + "===");
+        io.println("===Invoice #" + inv.getInvoiceNumber() + "===");
         io.println("Customer: " + inv.getCustomer().getName());
         io.println("Status: " + inv.getStatus());
         io.println("Items: ");

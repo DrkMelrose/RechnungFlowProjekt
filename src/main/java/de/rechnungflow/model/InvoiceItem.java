@@ -1,3 +1,9 @@
+package de.rechnungflow.model;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.math.BigDecimal;
 
 public class InvoiceItem {
@@ -5,7 +11,11 @@ public class InvoiceItem {
     private final int quantity;
     private final BigDecimal price;
 
-    public InvoiceItem(String description, int quantity, BigDecimal price){
+    @JsonCreator
+    public InvoiceItem(
+            @JsonProperty("description") String description,
+            @JsonProperty("quantity") int quantity,
+            @JsonProperty("price") BigDecimal price){
         if (description == null || description.isBlank()){
             throw new IllegalArgumentException("Description must not be blank");
         }
@@ -26,6 +36,7 @@ public class InvoiceItem {
         this.price = price;
     }
 
+    @JsonIgnore
     public BigDecimal getTotal(){
         return price.multiply(BigDecimal.valueOf(quantity)) ;
     }

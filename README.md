@@ -17,10 +17,10 @@ The project is developed as a learning-oriented but production-style Java/Spring
 ---
 
 ## Core Features (Roadmap)
-- Customer management (CRUD)
-- Offer → Order → Invoice workflow
+- de.rechnungflow.model.Customer management (CRUD)
+- Offer → Order → de.rechnungflow.model.Invoice workflow
 - Automatic calculations (Net / VAT / Gross)
-- Invoice payments (including partial payments)
+- de.rechnungflow.model.Invoice payments (including partial payments)
 - Open invoices overview
 - Export (CSV for accounting workflows, PDF invoices)
 
