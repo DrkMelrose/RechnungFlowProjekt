@@ -20,7 +20,32 @@
   "dueDate" : [ 2026, 2, 4 ],
   "paidAmount" : 863,
   "totalAmount" : 863,
-  "openAmount" : 0,
+  "fullyPaid" : true,
   "overpaidAmount" : 0,
-  "fullyPaid" : true
+  "openAmount" : 0
+}, {
+  "invoiceNumber" : 2,
+  "customer" : {
+    "name" : "Ivan",
+    "email" : "ivanko@gmail.com"
+  },
+  "status" : "PAID",
+  "items" : [ {
+    "description" : "jacket",
+    "quantity" : 1,
+    "price" : 200,
+    "total" : 200
+  }, {
+    "description" : "jeans",
+    "quantity" : 1,
+    "price" : 50,
+    "total" : 50
+  } ],
+  "issueDate" : [ 2026, 1, 21 ],
+  "dueDate" : [ 2026, 2, 4 ],
+  "paidAmount" : 250,
+  "totalAmount" : 250,
+  "fullyPaid" : true,
+  "overpaidAmount" : 0,
+  "openAmount" : 0
 } ]
