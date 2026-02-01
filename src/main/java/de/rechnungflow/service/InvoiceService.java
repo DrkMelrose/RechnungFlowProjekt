@@ -75,7 +75,9 @@ public class InvoiceService {
                     .orElse(0) + 1;
 
         } catch (IOException e) {
-            throw new RuntimeException("Failed to load invoices", e);
+            System.err.println("WARNING: Failed to save invoice. Start from the beginning. The Problem: " + e.getMessage());
+            invoices.clear();
+            nextInvoiceNumber = 1;
         }
 
 
