@@ -143,13 +143,14 @@ public class CliApp {
             printInvoiceSummary(invoice);
         }
 
-        int number = io.readInt("Choose the number of customer", 1, Integer.MAX_VALUE);
-        boolean ok = service.markAsPaid(number);
-
-        if (!ok) io.println("Invoice #" + number + "not found");
-        else{
-            io.println("Invoice #" + number + "marked as PAID");
+        int number = io.readInt("Choose the invoice number", 1, Integer.MAX_VALUE);
+        try {
+            service.markAsPaid(number);
+            io.println("Invoice #" + number + " marked as PAID");
+        } catch (RuntimeException e) {
+            io.println("Failed: " + e.getMessage());
         }
+
     }
 
 

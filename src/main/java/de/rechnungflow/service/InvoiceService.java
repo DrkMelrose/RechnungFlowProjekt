@@ -42,17 +42,28 @@ public class InvoiceService {
         return null;
     }
 
-    public boolean markAsPaid (int number){
+    public void markAsPaid(int number) {
         Invoice inv = findByNumber(number);
-        if (inv == null) return false;
+        if (inv == null) throw new IllegalArgumentException("Invoice not found");
+
+        if (inv.getStatus() == InvoiceStatus.PAID)
+            throw new IllegalStateException("Invoice is already PAID");
+        if (inv.getStatus() == InvoiceStatus.CANCELLED)
+            throw new IllegalStateException("Cannot pay a CANCELLED invoice");
 
         BigDecimal total = inv.getTotalAmount();
+        boolean hasItems = inv.getItems() != null && !inv.getItems().isEmpty();
+
+        if (!hasItems && total.compareTo(BigDecimal.ZERO) == 0)
+            throw new IllegalStateException("Invoice has no items and total=0");
+        if (total.compareTo(BigDecimal.ZERO) <= 0)
+            throw new IllegalStateException("Invoice total must be > 0");
+
         inv.setPaidAmount(total);
         inv.setStatus(InvoiceStatus.PAID);
         saveToFile();
-
-        return true;
     }
+
 
     public void loadFromFile(){
         //ObjectMapper mapper = new ObjectMapper();

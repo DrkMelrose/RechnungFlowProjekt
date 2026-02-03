@@ -87,11 +87,24 @@ public class Invoice {
     }
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public BigDecimal getTotalAmount(){
+        if (items == null || items.isEmpty()) return BigDecimal.ZERO;
+
         BigDecimal total = BigDecimal.ZERO;
-        for (InvoiceItem item : items){
-            total = total.add(item.getTotal());
+        for (InvoiceItem it : items){
+            if (it == null) continue;
+
+            BigDecimal line = it.getTotal();
+            if (line != null) total = total.add(line);
         }
         return total;
+    }
+
+    public boolean hasItems(){
+        return items != null && !items.isEmpty();
+    }
+
+    public boolean isZeroAndEmpty(){
+        return !hasItems() && getTotalAmount().compareTo(BigDecimal.ZERO) == 0;
     }
 
     public void pay(BigDecimal amount){
