@@ -6,6 +6,8 @@ import de.rechnungflow.model.InvoiceItem;
 import de.rechnungflow.model.InvoiceStatus;
 import de.rechnungflow.service.InvoiceService;
 
+import java.math.BigDecimal;
+
 public class CliApp {
     private final ConsoleIO io = new ConsoleIO();
     private final InvoiceService service = new InvoiceService();
@@ -17,13 +19,14 @@ public class CliApp {
         boolean running = true;
         while(running){
             printMenu();
-            int choice = io.readInt("Choose option: ", 0, 4);
+            int choice = io.readInt("Choose option: ", 0, 5);
 
             switch (choice){
                 case 1 -> createInvoice();
                 case 2 -> listInvoices();
                 case 3 -> showInvoice();
                 case 4 -> markInvoicePaid();
+                case 5 -> payPartially();
                 case 0 -> {
                     io.println("Bye!");
                     running = false;
@@ -38,6 +41,7 @@ public class CliApp {
         io.println("2) List invoices");
         io.println("3) Show invoice");
         io.println("4) Mark invoice paid");
+        io.println("5) Pay partially");
         io.println("0) Exit");
     }
 
@@ -149,6 +153,45 @@ public class CliApp {
             io.println("Invoice #" + number + " marked as PAID");
         } catch (RuntimeException e) {
             io.println("Failed: " + e.getMessage());
+        }
+
+    }
+
+    private void payPartially(){
+        for (Invoice inv : service.getAll()){
+            printInvoiceSummary(inv);
+        }
+
+        int invoiceNumber = io.readInt("Which invoice you want to pay partially?", 1, Integer.MAX_VALUE);
+        Invoice invoice = service.findByNumber(invoiceNumber);
+
+        printInvoiceDetails(invoice);
+
+        String raw  = io.readLine("How much do you want to pay now?");
+        raw = raw.trim().replace(",", ".");
+
+        BigDecimal amount;
+
+        try{
+            amount = new BigDecimal(raw);
+        } catch (NumberFormatException e){
+            io.println("Invalid amount format");
+            return;
+        }
+
+        boolean ok = service.payPartially(invoiceNumber, amount);
+
+        if(ok){
+            Invoice updated = service.findByNumber(invoiceNumber);
+            BigDecimal remaining = updated.getTotalAmount().subtract(updated.getPaidAmount());
+
+            if(updated != null) {
+                io.println("Paid " + amount + ". Paid total: " + updated.getPaidAmount() + ". Remaining: " + remaining);
+            } else {
+                io.println("Paid " + amount + ".");
+            }
+        } else {
+            io.println("Payment failed (invoice not found or invalid state/amount).");
         }
 
     }

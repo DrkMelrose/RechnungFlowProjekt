@@ -119,6 +119,33 @@ public class InvoiceService {
         }
     }
 
+    public boolean payPartially(int number, BigDecimal amount){
+        Invoice inv = findByNumber(number);
+        if (!canPayPartially(inv, amount)){
+            return false;
+        }
+
+        BigDecimal total = inv.getTotalAmount();
+        BigDecimal newPaid = inv.getPaidAmount().add(amount);
+
+        boolean fullyPaid = newPaid.compareTo(total) >= 0;
+        inv.setPaidAmount(fullyPaid ? total : newPaid);
+        inv.setStatus(fullyPaid ? InvoiceStatus.PAID : InvoiceStatus.PARTIALLY_PAID);
+
+        saveToFile();
+        return true;
+    }
+
+    private boolean canPayPartially(Invoice inv, BigDecimal amount){
+        if (inv == null) return false;
+        if (amount == null || amount.compareTo(BigDecimal.ZERO) <= 0) return false;
+
+        InvoiceStatus st = inv.getStatus();
+        if (st == InvoiceStatus.CANCELLED || st == InvoiceStatus.PAID) return false;
+
+        return inv.getTotalAmount().compareTo(BigDecimal.ZERO) > 0;
+    }
+
     public List<Invoice> getAll(){
         return Collections.unmodifiableList(invoices);
     }

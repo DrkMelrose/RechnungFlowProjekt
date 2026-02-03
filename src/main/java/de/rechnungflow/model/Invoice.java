@@ -143,11 +143,13 @@ public class Invoice {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public boolean isFullyPaid(){
-        return paidAmount.compareTo(getTotalAmount()) >= 0;
+        return paidAmount != null
+         && getTotalAmount().compareTo(BigDecimal.ZERO) > 0
+                && paidAmount.compareTo(getTotalAmount()) >= 0;
     }
 
     public BigDecimal getPaidAmount(){
-        return paidAmount;
+        return paidAmount == null ? BigDecimal.ZERO : paidAmount;
     }
 
     public void setPaidAmount(BigDecimal paidAmount){

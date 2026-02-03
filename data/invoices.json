@@ -15,17 +15,17 @@
   "dueDate" : [ 2026, 2, 15 ],
   "paidAmount" : 1234,
   "totalAmount" : 1234,
-  "overpaidAmount" : 0,
-  "zeroAndEmpty" : false,
+  "openAmount" : 0,
   "fullyPaid" : true,
-  "openAmount" : 0
+  "overpaidAmount" : 0,
+  "zeroAndEmpty" : false
 }, {
   "invoiceNumber" : 2,
   "customer" : {
     "name" : "qweee",
     "email" : "eeweweq"
   },
-  "status" : "DRAFT",
+  "status" : "PARTIALLY_PAID",
   "items" : [ {
     "description" : "roro",
     "quantity" : 1,
@@ -39,10 +39,10 @@
   } ],
   "issueDate" : [ 2026, 2, 3 ],
   "dueDate" : [ 2026, 2, 17 ],
-  "paidAmount" : 0,
+  "paidAmount" : 380,
   "totalAmount" : 1759,
-  "overpaidAmount" : 0,
-  "zeroAndEmpty" : false,
+  "openAmount" : 1379,
   "fullyPaid" : false,
-  "openAmount" : 1759
+  "overpaidAmount" : 0,
+  "zeroAndEmpty" : false
 } ]
