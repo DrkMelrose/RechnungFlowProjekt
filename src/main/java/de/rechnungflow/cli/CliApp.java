@@ -7,6 +7,7 @@ import de.rechnungflow.model.InvoiceStatus;
 import de.rechnungflow.service.InvoiceService;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class CliApp {
     private final ConsoleIO io = new ConsoleIO();
@@ -80,6 +81,8 @@ public class CliApp {
             return;
         }
 
+        printInvoiceSummaryHeader();
+
         for (Invoice inv : service.getAll()){
             printInvoiceSummary(inv);
         }
@@ -101,6 +104,7 @@ public class CliApp {
             return;
         }
 
+        printInvoiceSummaryHeader();
         for (Invoice inv : service.getAll()){
             printInvoiceSummary(inv);
         }
@@ -117,7 +121,30 @@ public class CliApp {
     }
 
     private void printInvoiceSummary(Invoice inv){
-        io.println("#" + inv.getInvoiceNumber() + "|" + inv.getCustomer().getName() + "|" + inv.getStatus());
+        //io.println("#" + inv.getInvoiceNumber() + "|" + inv.getCustomer().getName() + "|" + inv.getStatus());
+        //System.out.println("# | Customer | Status | Total | Paid | Open");
+        System.out.printf(
+                "%-4d | %-15s | %-14s | %12s | %12s | %12s%n",
+                inv.getInvoiceNumber(),
+                inv.getCustomer().getName(),
+                inv.getStatus(),
+                Formatters.money(inv.getTotalAmount()),
+                Formatters.money(inv.getPaidAmount()),
+                Formatters.money(inv.getOpenAmount())
+        );
+    }
+
+    private  void printInvoiceSummaryHeader(){
+        System.out.printf(
+                "%-4s | %-15s | %-14s | %12s | %12s | %12s%n",
+                "#",
+                "Customer",
+                "Status",
+                "Total",
+                "Paid",
+                "Open"
+        );
+        io.println("-----+-----------------+----------------+--------------+--------------+--------------");
     }
 
     private void printInvoiceDetails(Invoice inv){
