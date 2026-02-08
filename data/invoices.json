@@ -1,48 +1,22 @@
 [ {
   "invoiceNumber" : 1,
   "customer" : {
-    "name" : "riri",
-    "email" : "soso"
+    "name" : "Gosha",
+    "email" : "123123"
   },
   "status" : "PAID",
   "items" : [ {
-    "description" : "gomo",
-    "quantity" : 1,
-    "price" : 1234,
-    "total" : 1234
-  } ],
-  "issueDate" : [ 2026, 2, 1 ],
-  "dueDate" : [ 2026, 2, 15 ],
-  "paidAmount" : 1234,
-  "totalAmount" : 1234,
-  "openAmount" : 0,
-  "fullyPaid" : true,
-  "overpaidAmount" : 0,
-  "zeroAndEmpty" : false
-}, {
-  "invoiceNumber" : 2,
-  "customer" : {
-    "name" : "qweee",
-    "email" : "eeweweq"
-  },
-  "status" : "PARTIALLY_PAID",
-  "items" : [ {
-    "description" : "roro",
-    "quantity" : 1,
-    "price" : 999,
-    "total" : 999
-  }, {
-    "description" : "sisi",
+    "description" : "Ball",
     "quantity" : 2,
-    "price" : 380,
-    "total" : 760
+    "price" : 79.12,
+    "total" : 158.24
   } ],
-  "issueDate" : [ 2026, 2, 3 ],
-  "dueDate" : [ 2026, 2, 17 ],
-  "paidAmount" : 380,
-  "totalAmount" : 1759,
-  "openAmount" : 1379,
-  "fullyPaid" : false,
-  "overpaidAmount" : 0,
-  "zeroAndEmpty" : false
+  "issueDate" : [ 2026, 2, 8 ],
+  "dueDate" : [ 2026, 2, 22 ],
+  "paidAmount" : 158.24,
+  "totalAmount" : 158.24,
+  "fullyPaid" : true,
+  "zeroAndEmpty" : false,
+  "openAmount" : 0.00,
+  "overpaidAmount" : 0.00
 } ]

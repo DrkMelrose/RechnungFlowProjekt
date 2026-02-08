@@ -16,6 +16,7 @@ import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class InvoiceService {
     private static final Path FILE_PATH = Paths.get("data/invoices.json");
@@ -33,36 +34,31 @@ public class InvoiceService {
         return invoice;
     }
 
-    public Invoice findByNumber(int number){
-        for (Invoice inv : invoices){
-            if (inv.getInvoiceNumber() == number){
-                return inv;
-            }
-        }
-        return null;
+    public Optional<Invoice> findByNumber(int number){
+        return invoices.stream()
+                .filter(inv -> inv.getInvoiceNumber() == number)
+                .findFirst();
     }
 
-    public void markAsPaid(int number) {
-        Invoice inv = findByNumber(number);
-        if (inv == null) throw new IllegalArgumentException("Invoice not found");
+    public boolean markAsPaid(int number) {
+        Invoice inv = findByNumber(number)
+                .orElseThrow(() -> new IllegalArgumentException("Invoice not found: #" + number));
 
-        if (inv.getStatus() == InvoiceStatus.PAID)
-            throw new IllegalStateException("Invoice is already PAID");
-        if (inv.getStatus() == InvoiceStatus.CANCELLED)
-            throw new IllegalStateException("Cannot pay a CANCELLED invoice");
+        if (inv.getStatus() == InvoiceStatus.PAID) return false;
+        if (inv.getStatus() == InvoiceStatus.CANCELLED) return false;
 
         BigDecimal total = inv.getTotalAmount();
         boolean hasItems = inv.getItems() != null && !inv.getItems().isEmpty();
 
-        if (!hasItems && total.compareTo(BigDecimal.ZERO) == 0)
-            throw new IllegalStateException("Invoice has no items and total=0");
-        if (total.compareTo(BigDecimal.ZERO) <= 0)
-            throw new IllegalStateException("Invoice total must be > 0");
+        if (!hasItems && total.compareTo(BigDecimal.ZERO) == 0) return false;
+        if (total.compareTo(BigDecimal.ZERO) <= 0) return false;
 
         inv.setPaidAmount(total);
         inv.setStatus(InvoiceStatus.PAID);
         saveToFile();
+        return true;
     }
+
 
 
     public void loadFromFile(){
@@ -120,7 +116,8 @@ public class InvoiceService {
     }
 
     public boolean payPartially(int number, BigDecimal amount){
-        Invoice inv = findByNumber(number);
+        Invoice inv = findByNumber(number)
+                .orElseThrow(() -> new IllegalArgumentException("Invoice not found: #" + number));
         if (!canPayPartially(inv, amount)){
             return false;
         }

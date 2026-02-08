@@ -89,7 +89,8 @@ public class CliApp {
 
         int number = io.readInt("Show details (invoice number) or  0 to back: ", 0, Integer.MAX_VALUE);
         if (number != 0){
-            Invoice inv = service.findByNumber(number);
+            Invoice inv = service.findByNumber(number)
+                    .orElseThrow(() -> new IllegalArgumentException("Invoice not found: #" + number));
             if(inv == null){
                 io.println("Invoice #" + number + " not found.");
             } else {
@@ -110,7 +111,8 @@ public class CliApp {
         }
 
         int number = io.readInt("Invoice number to show: ", 1, Integer.MAX_VALUE);
-        Invoice invoice = service.findByNumber(number);
+        Invoice invoice = service.findByNumber(number)
+                .orElseThrow(() -> new IllegalArgumentException("Invoice not found: #" + number));
 
         if (invoice==null){
             io.println("Invoice #" + number + " not found");
@@ -190,7 +192,8 @@ public class CliApp {
         }
 
         int invoiceNumber = io.readInt("Which invoice you want to pay partially?", 1, Integer.MAX_VALUE);
-        Invoice invoice = service.findByNumber(invoiceNumber);
+        Invoice invoice = service.findByNumber(invoiceNumber)
+                .orElseThrow(() -> new IllegalArgumentException("Invoice not found: #" + invoiceNumber));
 
         printInvoiceDetails(invoice);
 
@@ -209,7 +212,8 @@ public class CliApp {
         boolean ok = service.payPartially(invoiceNumber, amount);
 
         if(ok){
-            Invoice updated = service.findByNumber(invoiceNumber);
+            Invoice updated = service.findByNumber(invoiceNumber)
+                    .orElseThrow(() -> new IllegalArgumentException("Invoice not found: #" + invoiceNumber));
             BigDecimal remaining = updated.getTotalAmount().subtract(updated.getPaidAmount());
 
             if(updated != null) {
