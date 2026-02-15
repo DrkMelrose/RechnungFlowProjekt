@@ -1,25 +1,24 @@
 package de.rechnungflow.model;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
 
 public class InvoiceItem {
     private final String description;
-    private final int quantity;
+    private final BigDecimal hours;
     private final BigDecimal price;
 
     @JsonCreator
     public InvoiceItem(
             @JsonProperty("description") String description,
-            @JsonProperty("quantity") int quantity,
+            @JsonProperty("hours") BigDecimal hours,
             @JsonProperty("price") BigDecimal price){
         if (description == null || description.isBlank()){
             throw new IllegalArgumentException("Description must not be blank");
         }
-        if (quantity <= 0){
+        if (hours.compareTo(BigDecimal.ZERO) <= 0){
             throw new IllegalArgumentException("The number must be positiv");
         }
 
@@ -32,21 +31,21 @@ public class InvoiceItem {
         }
 
         this.description = description;
-        this.quantity = quantity;
+        this.hours = hours;
         this.price = price;
     }
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     public BigDecimal getTotal(){
-        return price.multiply(BigDecimal.valueOf(quantity)) ;
+        return price.multiply(hours) ;
     }
 
     public String getDescription(){
         return description;
     }
 
-    public int getQuantity(){
-        return quantity;
+    public BigDecimal getHours(){
+        return hours;
     }
 
     public BigDecimal getPrice(){

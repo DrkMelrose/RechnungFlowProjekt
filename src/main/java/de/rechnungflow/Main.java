@@ -1,49 +1,35 @@
 package de.rechnungflow;
 
 import de.rechnungflow.cli.CliApp;
+import de.rechnungflow.model.CleaningObjectService;
+import de.rechnungflow.model.ClientService;
+import de.rechnungflow.model.InvoiceGeneratorService;
+import de.rechnungflow.model.WorkLogService;
+import de.rechnungflow.service.InvoiceService;
 
 public class Main {
     static void main(String[] args) {
-        new CliApp().run();
 
+        WorkLogService workLogService = new WorkLogService();
+        CleaningObjectService cleaningObjectService = new CleaningObjectService();
+        ClientService clientService = new ClientService();
+        InvoiceService invoiceService = new InvoiceService();
 
+        InvoiceGeneratorService invoiceGeneratorService = new InvoiceGeneratorService(
+                workLogService,
+                cleaningObjectService,
+                clientService,
+                invoiceService
+        );
 
+        CliApp app = new CliApp(
+                invoiceGeneratorService,
+                invoiceService,
+                workLogService,
+                cleaningObjectService,
+                clientService
+        );
 
-
-
-
-        //de.rechnungflow.model.Customer customer = new de.rechnungflow.model.Customer("Ivan Petrov", "ivan@gmail.com");
-
-        //de.rechnungflow.model.Invoice invoice = new de.rechnungflow.model.Invoice("INV-01", customer);
-
-        //invoice.addItem(new de.rechnungflow.model.InvoiceItem("Website development",1,BigDecimal.valueOf(1200)));
-        //invoice.addItem(new de.rechnungflow.model.InvoiceItem("Hosting 1 year", 1, BigDecimal.valueOf(120)));
-
-        //System.out.println("Status: " + invoice.getStatus());
-        //invoice.send();
-        //System.out.println("Status: " + invoice.getStatus());
-
-        //invoice.pay(BigDecimal.valueOf(500));
-        //System.out.println("Paid: " + invoice.getPaidAmount());
-        //System.out.println("Open:" + invoice.getOpenAmount());
-        //System.out.println("Status:" + invoice.getStatus());
-
-        //invoice.setDueDate(java.time.LocalDate.now().minusDays(1));
-        //invoice.updateOverdueStatus();
-        //System.out.println("Status after overdue check: " + invoice.getStatus());
-
-        //invoice.pay(BigDecimal.valueOf(1000));
-        //System.out.println("Status: " + invoice.getStatus());
-
-
-        //System.out.println("Total invoices: " + invoice.getTotalAmount());
-
-
-        //System.out.println(invoice.getStatus());
-        //invoice.pay(500);
-        //System.out.println(invoice.getStatus());
-        //invoice.pay(1000);
-        //System.out.println(invoice.getStatus());
-
+        app.run();
     }
 }

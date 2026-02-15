@@ -1,22 +1,23 @@
 [ {
   "invoiceNumber" : 1,
-  "customer" : {
-    "name" : "Gosha",
-    "email" : "123123"
-  },
-  "status" : "PAID",
+  "status" : "DRAFT",
   "items" : [ {
-    "description" : "Ball",
-    "quantity" : 2,
-    "price" : 79.12,
-    "total" : 158.24
+    "description" : "24",
+    "hours" : 23,
+    "price" : 22,
+    "total" : 506
   } ],
-  "issueDate" : [ 2026, 2, 8 ],
-  "dueDate" : [ 2026, 2, 22 ],
-  "paidAmount" : 158.24,
-  "totalAmount" : 158.24,
-  "fullyPaid" : true,
+  "issueDate" : [ 2026, 2, 15 ],
+  "dueDate" : [ 2026, 3, 1 ],
+  "paidAmount" : 0,
+  "totalAmount" : 506,
+  "openAmount" : 506,
+  "customer" : {
+    "id" : 0,
+    "contactPerson" : "12",
+    "email" : "33"
+  },
+  "fullyPaid" : false,
   "zeroAndEmpty" : false,
-  "openAmount" : 0.00,
-  "overpaidAmount" : 0.00
+  "overpaidAmount" : 0
 } ]

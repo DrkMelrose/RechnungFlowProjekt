@@ -1,4 +1,4 @@
-import de.rechnungflow.model.Customer;
+import de.rechnungflow.model.Client;
 import de.rechnungflow.model.Invoice;
 import de.rechnungflow.model.InvoiceItem;
 import de.rechnungflow.model.InvoiceStatus;
@@ -17,9 +17,9 @@ public class MarkAsPaidSetsPaidAmountAndStatusTest {
 
         //GIVEN
         InvoiceService service = new InvoiceService();
-        Customer customer = new Customer("Gosha", "123123");
-        Invoice invoice = service.createInvoice(customer);
-        invoice.addItem(new InvoiceItem("Ball", 2, new BigDecimal("79.12")));
+        Client client = new Client("Gosha", "123123", "koko", "123");
+        Invoice invoice = service.createInvoice(client);
+        invoice.addItem(new InvoiceItem("Ball", new BigDecimal("2"), new BigDecimal("79.12")));
 
         //WHEN
         int number = invoice.getInvoiceNumber();

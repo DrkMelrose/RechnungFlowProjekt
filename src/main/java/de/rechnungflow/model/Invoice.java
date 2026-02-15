@@ -13,7 +13,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Invoice {
     private int invoiceNumber;
-    private Customer customer;
+    private Client client;
     private InvoiceStatus status = InvoiceStatus.DRAFT;
     private List<InvoiceItem> items = new ArrayList<>();
     private static final ZoneId BUSINESS_ZONE = ZoneId.of("Europe/Berlin");
@@ -25,18 +25,18 @@ public class Invoice {
     @JsonCreator
     public Invoice(
             @JsonProperty("invoiceNumber") int invoiceNumber,
-            @JsonProperty("customerName") Customer customer
+            @JsonProperty("customerName") Client client
     ) {
         this.invoiceNumber = invoiceNumber;
-        this.customer = customer;
+        this.client = client;
     }
 
-    public Customer getCustomer(){
-        return customer;
+    public Client getCustomer(){
+        return client;
     }
 
-    public void setCustomer(Customer customer){
-        this.customer = customer;
+    public void setCustomer(Client client){
+        this.client = client;
     }
 
     public int getInvoiceNumber(){

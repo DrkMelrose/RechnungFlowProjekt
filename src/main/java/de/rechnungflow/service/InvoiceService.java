@@ -3,7 +3,7 @@ package de.rechnungflow.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.rechnungflow.model.Customer;
+import de.rechnungflow.model.Client;
 import de.rechnungflow.model.Invoice;
 import de.rechnungflow.model.InvoiceStatus;
 
@@ -26,11 +26,10 @@ public class InvoiceService {
             .findAndRegisterModules()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-    public Invoice createInvoice(Customer customer){
-        Invoice invoice = new Invoice(nextInvoiceNumber, customer);
+    public Invoice createInvoice(Client client){
+        Invoice invoice = new Invoice(nextInvoiceNumber, client);
         nextInvoiceNumber++;
         invoices.add(invoice);
-        //saveToFile();
         return invoice;
     }
 
