@@ -25,7 +25,7 @@ public class Invoice {
     @JsonCreator
     public Invoice(
             @JsonProperty("invoiceNumber") int invoiceNumber,
-            @JsonProperty("customerName") Client client
+            @JsonProperty("client") Client client
     ) {
         this.invoiceNumber = invoiceNumber;
         this.client = client;

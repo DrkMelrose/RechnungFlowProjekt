@@ -17,8 +17,7 @@ public class InvoiceGeneratorService {
             WorkLogService workLogService,
             CleaningObjectService cleaningObjectService,
             ClientService clientService,
-            InvoiceService invoiceService
-    ){
+            InvoiceService invoiceService){
         this.workLogService = workLogService;
         this.cleaningObjectService = cleaningObjectService;
         this.clientService = clientService;

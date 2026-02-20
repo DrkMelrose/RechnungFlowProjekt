@@ -1,6 +1,7 @@
 package de.rechnungflow.cli;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Scanner;
 
 public class ConsoleIO {
@@ -40,6 +41,17 @@ public class ConsoleIO {
                 return new BigDecimal(s);
             } catch (NumberFormatException e){
                 System.out.println("Invalid amount. Example: 13.50");
+            }
+        }
+    }
+
+    public LocalDate readDate(String prompt){
+        while (true){
+            String input = readLine(prompt).trim();
+            try{
+                return LocalDate.parse(input);
+            } catch (Exception e){
+                println("Invalid date format. Please use YYYY-MM-DD (e.g. 2026-01-02");
             }
         }
     }

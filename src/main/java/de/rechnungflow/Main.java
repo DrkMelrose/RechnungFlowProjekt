@@ -1,10 +1,7 @@
 package de.rechnungflow;
 
 import de.rechnungflow.cli.CliApp;
-import de.rechnungflow.model.CleaningObjectService;
-import de.rechnungflow.model.ClientService;
-import de.rechnungflow.model.InvoiceGeneratorService;
-import de.rechnungflow.model.WorkLogService;
+import de.rechnungflow.model.*;
 import de.rechnungflow.service.InvoiceService;
 
 public class Main {
@@ -14,6 +11,7 @@ public class Main {
         CleaningObjectService cleaningObjectService = new CleaningObjectService();
         ClientService clientService = new ClientService();
         InvoiceService invoiceService = new InvoiceService();
+        EmployeeService employeeService = new EmployeeService();
 
         InvoiceGeneratorService invoiceGeneratorService = new InvoiceGeneratorService(
                 workLogService,
@@ -22,12 +20,17 @@ public class Main {
                 invoiceService
         );
 
+        clientService.loadFromFile();
+        employeeService.loadFromFile();
+        cleaningObjectService.loadFromFile();
+
         CliApp app = new CliApp(
                 invoiceGeneratorService,
                 invoiceService,
                 workLogService,
                 cleaningObjectService,
-                clientService
+                clientService,
+                employeeService
         );
 
         app.run();

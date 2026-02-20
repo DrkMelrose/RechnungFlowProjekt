@@ -1,0 +1,16 @@
+[ {
+  "employeesId" : 1,
+  "phoneOfEmployee" : "1238818",
+  "emailOfEmployee" : "hhhhw@gmail.com",
+  "nameOfEmployee" : "Nastya"
+}, {
+  "employeesId" : 2,
+  "phoneOfEmployee" : "51515",
+  "emailOfEmployee" : "chchchundra",
+  "nameOfEmployee" : "chacha"
+}, {
+  "employeesId" : 3,
+  "phoneOfEmployee" : "123890ß192745",
+  "emailOfEmployee" : "sosik",
+  "nameOfEmployee" : "goga"
+} ]

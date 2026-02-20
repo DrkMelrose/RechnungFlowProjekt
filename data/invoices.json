@@ -2,22 +2,24 @@
   "invoiceNumber" : 1,
   "status" : "DRAFT",
   "items" : [ {
-    "description" : "24",
-    "hours" : 23,
-    "price" : 22,
-    "total" : 506
+    "description" : "Cleaning service: Office (2026-02-20 - 2026-02-20)",
+    "hours" : 11,
+    "price" : 8,
+    "total" : 88
   } ],
-  "issueDate" : [ 2026, 2, 15 ],
-  "dueDate" : [ 2026, 3, 1 ],
+  "issueDate" : [ 2026, 2, 20 ],
+  "dueDate" : [ 2026, 3, 6 ],
   "paidAmount" : 0,
-  "totalAmount" : 506,
-  "openAmount" : 506,
+  "zeroAndEmpty" : false,
   "customer" : {
-    "id" : 0,
-    "contactPerson" : "12",
-    "email" : "33"
+    "id" : 1,
+    "companyName" : "Müller GmbH",
+    "contactPerson" : "Edwin Savatski",
+    "email" : "savatskisexy69@gmail.com",
+    "phone" : "4915228089994"
   },
   "fullyPaid" : false,
-  "zeroAndEmpty" : false,
-  "overpaidAmount" : 0
+  "overpaidAmount" : 0,
+  "totalAmount" : 88,
+  "openAmount" : 88
 } ]

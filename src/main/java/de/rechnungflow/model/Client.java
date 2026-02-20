@@ -1,5 +1,8 @@
 package de.rechnungflow.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Client {
     int id;
     private String companyName;
@@ -7,8 +10,14 @@ public class Client {
     private String email;
     private String phone;
 
-
-    public Client(int id, String companyName, String contactPerson, String email, String phone){
+    @JsonCreator
+    public Client(
+            @JsonProperty("id")int id,
+            @JsonProperty("companyName")String companyName,
+            @JsonProperty("contactPerson")String contactPerson,
+            @JsonProperty("email")String email,
+            @JsonProperty("phone")String phone
+    ){
         this.id = id;
         this.companyName = companyName;
         this.contactPerson = contactPerson;
@@ -27,6 +36,10 @@ public class Client {
     public int getId(){
         return id;
     }
+
+    public String getCompanyName() { return companyName; }
+
+    public String getPhone() { return phone; }
 
     public String getContactPerson(){
         return contactPerson;

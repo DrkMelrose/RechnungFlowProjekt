@@ -1,0 +1,19 @@
+[ {
+  "id" : 1,
+  "companyName" : "Müller GmbH",
+  "contactPerson" : "Edwin Savatski",
+  "email" : "savatskisexy69@gmail.com",
+  "phone" : "4915228089994"
+}, {
+  "id" : 2,
+  "companyName" : "qweqwe",
+  "contactPerson" : "boba",
+  "email" : "bbaba221",
+  "phone" : "123565666"
+}, {
+  "id" : 3,
+  "companyName" : "123213",
+  "contactPerson" : "abiba",
+  "email" : "vivabo",
+  "phone" : "12456767"
+} ]

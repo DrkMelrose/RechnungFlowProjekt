@@ -4,6 +4,7 @@ import de.rechnungflow.model.*;
 import de.rechnungflow.service.InvoiceService;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 public class CliApp {
     private final ConsoleIO io = new ConsoleIO();
@@ -12,19 +13,21 @@ public class CliApp {
     private final WorkLogService workLogService;
     private final CleaningObjectService cleaningObjectService;
     private final ClientService clientService;
+    private final EmployeeService employeeService;
 
     public CliApp(
             InvoiceGeneratorService invoiceGeneratorService,
             InvoiceService invoiceService,
             WorkLogService workLogService,
             CleaningObjectService cleaningObjectService,
-            ClientService clientService
-    ){
+            ClientService clientService,
+            EmployeeService employeeService){
         this.invoiceGeneratorService = invoiceGeneratorService;
         this.invoiceService = invoiceService;
         this.workLogService = workLogService;
         this.cleaningObjectService = cleaningObjectService;
         this.clientService = clientService;
+        this.employeeService = employeeService;
     }
 
     public void run(){
@@ -34,14 +37,15 @@ public class CliApp {
         boolean running = true;
         while(running){
             printMenu();
-            int choice = io.readInt("Choose option: ", 0, 5);
+            int choice = io.readInt("Choose option: ", 0, 6);
 
             switch (choice){
-                case 1 -> createInvoice();
-                case 2 -> listInvoices();
-                case 3 -> showInvoice();
-                case 4 -> markInvoicePaid();
-                case 5 -> payPartially();
+                case 1 -> createClient();
+                case 2 -> createCleaningObject();
+                case 3 -> createEmployee();
+                case 4 -> addWorkLog();
+                case 5 -> generateInvoiceForObject();
+                case 6 -> listInvoices();
                 case 0 -> {
                     io.println("Bye!");
                     running = false;
@@ -52,13 +56,97 @@ public class CliApp {
     }
 
     private void printMenu(){
-        io.println("1) Create invoice");
-        io.println("2) List invoices");
-        io.println("3) Show invoice");
-        io.println("4) Mark invoice paid");
-        io.println("5) Pay partially");
+        io.println("1) Create client");
+        io.println("2) Create cleaning Object");
+        io.println("3) Create employee");
+        io.println("4) Add work log");
+        io.println("5) Generate invoice for object (period)");
+        io.println("6) List invoices");
         io.println("0) Exit");
     }
+
+    private void generateInvoiceForObject(){
+        io.println("--- Generate invoice for object (period) ---");
+
+        int objectId = io.readInt("Object ID: ", 1, 100000);
+
+        LocalDate from = io.readDate("From date (YYYY-MM-DD): ");
+        LocalDate to = io.readDate("To date (YYYY-MM-DD)");
+
+        if (to.isBefore(from)){
+            io.println("Error: TO date must be after FROM date");
+        }
+
+        Invoice invoice = invoiceGeneratorService.generateInvoiceForObject(objectId, from, to);
+
+        if (invoice == null){
+            io.println("No invoice generated. Checl object ID, client link, or work logs for that period");
+            return;
+        }
+
+        io.println("Invoice generated");
+        io.println("Invoice number: " + invoice.getInvoiceNumber());
+        io.println("Total amount: " + invoice.getTotalAmount());
+    }
+
+    private void createClient(){
+        io.println("--- Create client ---");
+
+        String companyName = io.readLine("Company name: ");
+        String contactPerson = io.readLine("Contact person: ");
+        String email = io.readLine("Email: ");
+        String phone = io.readLine("Phone: ");
+
+        Client client = clientService.createClient(companyName, contactPerson, email, phone);
+
+        io.println("Client created. ID: " + client.getId());
+
+    }
+
+    public void createCleaningObject(){
+        io.println("--- Create cleaning Object ---");
+
+        int clientId = io.readInt("Client ID: ", 1, 1000000);
+        String name = io.readLine("Object name: ");
+        String address = io.readLine("Address of object: ");
+        BigDecimal hourlyRate = io.readBigDecimal("Hourly rate: ");
+
+        Client client = clientService.findClientById(clientId);
+
+        if (client == null){
+            io.println("Client not found" + clientId);
+            return;
+        }
+
+        CleaningObject obj = cleaningObjectService.createCleaningObject(clientId, name, address, hourlyRate);
+        io.println("Cleaning object created. ID: " + obj.getCleaningObjectId());
+    }
+
+    public void createEmployee(){
+        io.println("--- Create employee ---");
+
+        String name = io.readLine("Employee name: ");
+        String phone = io.readLine("Employee phone: ");
+        String email = io.readLine("Employee email: ");
+
+        Employee employee = employeeService.createEmployee(name, phone, email);
+
+        io.println("Employee created.ID: " + employee.getEmployeesId());
+    }
+
+    private void addWorkLog(){
+        io.println("--- Add work log ---");
+
+        int employeeId = io.readInt("Employee ID: ", 1, 1000000);
+        int objectId = io.readInt("Object ID: ", 1, 1000000);
+        LocalDate date = io.readDate("Date (YYYY-MM-DD)");
+        BigDecimal hours = io.readBigDecimal("Hours (e.g. 7.5)");
+
+        WorkLog wl = workLogService.createWorkLog(employeeId, objectId, date, hours);
+
+        io.println("Work log added. ID: " + wl.getId());
+    }
+
 
     private void createInvoice(){
         io.println("===== Create Invoice =====");
@@ -74,7 +162,7 @@ public class CliApp {
 
         Invoice invoice = invoiceService.createInvoice(client);
 
-        int itemsCount = io.readInt("How many items?", 1,50);
+        int itemsCount = io.readInt("How many services are provided?", 1,50);
 
         for (int i = 1; i <= itemsCount; i++){
             io.println("--- Item " + i + "---");
@@ -155,7 +243,7 @@ public class CliApp {
         System.out.printf(
                 "%-4s | %-15s | %-14s | %12s | %12s | %12s%n",
                 "#",
-                "Customer",
+                "Client",
                 "Status",
                 "Total",
                 "Paid",
@@ -168,12 +256,12 @@ public class CliApp {
         io.println("===Invoice #" + inv.getInvoiceNumber() + "===");
         io.println("Customer: " + inv.getCustomer().getContactPerson());
         io.println("Status: " + inv.getStatus());
-        io.println("Items: ");
+        io.println("Cleaning: ");
 
         int i = 1;
         for (InvoiceItem item : inv.getItems()){
             io.println(" " + i + ") " + item.getDescription() +
-                    " | qty: " + item.getHours()
+                    " | hours: " + item.getHours()
                 + " | price " + item.getPrice());
             i++;
         }

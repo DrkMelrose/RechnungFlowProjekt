@@ -17,7 +17,7 @@ public class WorkLogService {
 
     public List<WorkLog> findByObjectAndPeriod(int objectId, LocalDate from, LocalDate to){
         return workLogs.stream()
-                .filter(w -> w.getObjectId() == objectId)
+                .filter(w -> w.getId() == objectId)
                 .filter(w -> !w.getDate().isBefore(from) && !w.getDate().isAfter(to))
                 .toList();
     }

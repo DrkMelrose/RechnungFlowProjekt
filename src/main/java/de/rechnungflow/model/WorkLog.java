@@ -18,7 +18,9 @@ public class WorkLog {
         this.hours = hours;
     }
 
-    public int getObjectId() { return id; }
+    public int getId() { return id; }
     public LocalDate getDate() { return date; }
     public BigDecimal getHours() { return hours; }
+    public int getEmployeeId() { return employeeId; }
+    public int getObjectId() { return objectId; }
 }
