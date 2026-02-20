@@ -1,6 +1,6 @@
-package de.rechnungflow.model;
+package de.rechnungflow.service;
 
-import de.rechnungflow.service.InvoiceService;
+import de.rechnungflow.model.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

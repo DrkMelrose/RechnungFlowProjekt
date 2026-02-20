@@ -1,6 +1,7 @@
-package de.rechnungflow.model;
+package de.rechnungflow.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import de.rechnungflow.model.Employee;
 import de.rechnungflow.persistance.JsonStorage;
 
 import java.nio.file.Path;

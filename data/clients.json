@@ -16,4 +16,10 @@
   "contactPerson" : "abiba",
   "email" : "vivabo",
   "phone" : "12456767"
+}, {
+  "id" : 4,
+  "companyName" : "NePomuk",
+  "contactPerson" : "Roso",
+  "email" : "matuishko@gmail.com",
+  "phone" : "7878111"
 } ]

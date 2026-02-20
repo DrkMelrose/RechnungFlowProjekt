@@ -1,7 +1,7 @@
 package de.rechnungflow.cli;
 
 import de.rechnungflow.model.*;
-import de.rechnungflow.service.InvoiceService;
+import de.rechnungflow.service.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -37,7 +37,7 @@ public class CliApp {
         boolean running = true;
         while(running){
             printMenu();
-            int choice = io.readInt("Choose option: ", 0, 6);
+            int choice = io.readInt("Choose option: ", 0, 8);
 
             switch (choice){
                 case 1 -> createClient();
@@ -46,6 +46,8 @@ public class CliApp {
                 case 4 -> addWorkLog();
                 case 5 -> generateInvoiceForObject();
                 case 6 -> listInvoices();
+                case 7 -> markInvoicePaid();
+                case 8 -> payPartially();
                 case 0 -> {
                     io.println("Bye!");
                     running = false;
@@ -62,6 +64,8 @@ public class CliApp {
         io.println("4) Add work log");
         io.println("5) Generate invoice for object (period)");
         io.println("6) List invoices");
+        io.println("7) Mark invoice paid");
+        io.println("8) Mark invoice partially paid");
         io.println("0) Exit");
     }
 
@@ -137,7 +141,18 @@ public class CliApp {
     private void addWorkLog(){
         io.println("--- Add work log ---");
 
+        printEmployeeSummaryHeader();
+        for (Employee emp : employeeService.getAll()){
+                printEmployeesSummary(emp);
+        }
+
         int employeeId = io.readInt("Employee ID: ", 1, 1000000);
+
+        printCleaningObjectSummaryHeader();
+        for (CleaningObject obj : cleaningObjectService.getAll()){
+            printCleaningObjectSummary(obj);
+        }
+
         int objectId = io.readInt("Object ID: ", 1, 1000000);
         LocalDate date = io.readDate("Date (YYYY-MM-DD)");
         BigDecimal hours = io.readBigDecimal("Hours (e.g. 7.5)");
@@ -236,6 +251,49 @@ public class CliApp {
                 Formatters.money(inv.getTotalAmount()),
                 Formatters.money(inv.getPaidAmount()),
                 Formatters.money(inv.getOpenAmount())
+        );
+    }
+
+    private void printEmployeesSummary(Employee emp){
+        System.out.printf(
+                "%-4d | %-15s | %-14s | %12s%n",
+                emp.getEmployeesId(),
+                emp.getNameOfEmployee(),
+                emp.getPhoneOfEmployee(),
+                emp.getEmailOfEmployee()
+        );
+    }
+
+    private void printEmployeeSummaryHeader(){
+        System.out.printf(
+                "%-4s | %-15s | %-14s | %12s%n",
+                "#",
+                "Employee name",
+                "Employee phone",
+                "Employee email"
+        );
+    }
+
+    private void printCleaningObjectSummary(CleaningObject obj){
+        System.out.printf(
+                "%-8s | %-10s | %-20.20s | %-30.30s | %10.2f%n",
+                obj.getCleaningObjectId(),
+                obj.getClientId(),
+                obj.getName(),
+                obj.getAddress(),
+                obj.getHourlyRate()
+        );
+    }
+
+    private void printCleaningObjectSummaryHeader(){
+        System.out.printf(
+                "%-8s | %-10s | %-20s | %-30s | %10s%n",
+                "Object #",
+                "Client #",
+                "Object name",
+                "Address",
+                "Hourly rate"
+
         );
     }
 

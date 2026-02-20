@@ -1,4 +1,6 @@
-package de.rechnungflow.model;
+package de.rechnungflow.service;
+
+import de.rechnungflow.model.WorkLog;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

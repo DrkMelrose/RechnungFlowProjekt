@@ -1,6 +1,7 @@
-package de.rechnungflow.model;
+package de.rechnungflow.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import de.rechnungflow.model.CleaningObject;
 import de.rechnungflow.persistance.JsonStorage;
 
 import java.math.BigDecimal;
@@ -43,5 +44,9 @@ public class CleaningObjectService {
                 .filter(o -> o.getCleaningObjectId() == id)
                 .findFirst()
                 .orElse(null);
+    }
+
+    public List<CleaningObject> getAll(){
+        return new ArrayList<>(cleaningObjects);
     }
 }

@@ -1,8 +1,7 @@
 package de.rechnungflow;
 
 import de.rechnungflow.cli.CliApp;
-import de.rechnungflow.model.*;
-import de.rechnungflow.service.InvoiceService;
+import de.rechnungflow.service.*;
 
 public class Main {
     static void main(String[] args) {
