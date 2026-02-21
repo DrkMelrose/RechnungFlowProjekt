@@ -1,25 +1,25 @@
 [ {
   "invoiceNumber" : 1,
-  "status" : "PARTIALLY_PAID",
+  "status" : "PAID",
   "items" : [ {
-    "description" : "Cleaning service: Office (2026-02-20 - 2026-02-20)",
-    "hours" : 11,
-    "price" : 8,
-    "total" : 88
+    "description" : "Ball",
+    "hours" : 2,
+    "price" : 79.12,
+    "total" : 158.24
   } ],
-  "issueDate" : [ 2026, 2, 20 ],
-  "dueDate" : [ 2026, 3, 6 ],
-  "paidAmount" : 30,
-  "totalAmount" : 88,
-  "customer" : {
-    "id" : 1,
-    "companyName" : "Müller GmbH",
-    "contactPerson" : "Edwin Savatski",
-    "email" : "savatskisexy69@gmail.com",
-    "phone" : "4915228089994"
-  },
-  "openAmount" : 58,
-  "overpaidAmount" : 0,
+  "issueDate" : [ 2026, 2, 21 ],
+  "dueDate" : [ 2026, 3, 7 ],
+  "paidAmount" : 158.24,
+  "totalAmount" : 158.24,
   "zeroAndEmpty" : false,
-  "fullyPaid" : false
+  "customer" : {
+    "id" : 0,
+    "companyName" : "Gosha",
+    "contactPerson" : "123123",
+    "email" : "koko",
+    "phone" : "123"
+  },
+  "openAmount" : 0.00,
+  "fullyPaid" : true,
+  "overpaidAmount" : 0.00
 } ]

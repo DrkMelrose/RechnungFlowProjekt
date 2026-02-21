@@ -22,6 +22,7 @@ public class Main {
         clientService.loadFromFile();
         employeeService.loadFromFile();
         cleaningObjectService.loadFromFile();
+        workLogService.loadFromFile();
 
         CliApp app = new CliApp(
                 invoiceGeneratorService,

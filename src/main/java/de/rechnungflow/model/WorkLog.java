@@ -1,5 +1,8 @@
 package de.rechnungflow.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -10,7 +13,14 @@ public class WorkLog {
     private LocalDate date;
     private BigDecimal hours;
 
-    public WorkLog(int id, int employeeId, int objectId, LocalDate date, BigDecimal hours){
+    @JsonCreator
+    public WorkLog(
+            @JsonProperty("id")int id,
+            @JsonProperty("employeeId")int employeeId,
+            @JsonProperty("objectId")int objectId,
+            @JsonProperty("date")LocalDate date,
+            @JsonProperty("hours")BigDecimal hours
+    ){
         this.id = id;
         this.employeeId = employeeId;
         this.objectId = objectId;

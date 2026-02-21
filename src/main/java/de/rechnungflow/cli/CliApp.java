@@ -5,6 +5,9 @@ import de.rechnungflow.service.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 public class CliApp {
     private final ConsoleIO io = new ConsoleIO();
@@ -72,7 +75,29 @@ public class CliApp {
     private void generateInvoiceForObject(){
         io.println("--- Generate invoice for object (period) ---");
 
+        printCleaningObjectSummaryHeader();
+        for (CleaningObject obj : cleaningObjectService.getAll()){
+            printCleaningObjectSummary(obj);
+        }
+
         int objectId = io.readInt("Object ID: ", 1, 100000);
+        Map<LocalDate, BigDecimal> hoursByDay = new TreeMap<>();
+
+        for(WorkLog wl : workLogService.getAll()){
+            if (wl.getObjectId() == objectId){
+                hoursByDay.merge(wl.getDate(), wl.getHours(), BigDecimal::add);
+            }
+        }
+
+        if (hoursByDay.isEmpty()) {
+            io.println("No work logs found for this object");
+            return;
+        } else {
+            io.println("Cleaning days for ObjectID " + objectId + ":");
+            for ( var e : hoursByDay.entrySet()){
+                io.println(" - " + e.getKey() + " | hours: " + e.getValue());
+            }
+        }
 
         LocalDate from = io.readDate("From date (YYYY-MM-DD): ");
         LocalDate to = io.readDate("To date (YYYY-MM-DD)");
@@ -84,7 +109,7 @@ public class CliApp {
         Invoice invoice = invoiceGeneratorService.generateInvoiceForObject(objectId, from, to);
 
         if (invoice == null){
-            io.println("No invoice generated. Checl object ID, client link, or work logs for that period");
+            io.println("No invoice generated. Check object ID, client link, or work logs for that period");
             return;
         }
 
