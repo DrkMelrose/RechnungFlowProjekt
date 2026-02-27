@@ -1,13 +1,9 @@
 [ {
   "clientId" : 1,
-  "name" : "boba",
-  "address" : "boba 3 strasse",
-  "hourlyRate" : 30,
+  "name" : "Gomo Apartaments",
+  "address" : "sexystraße 123123",
+  "hourlyRate" : 69,
+  "fixedMonthPrice" : 800,
+  "active" : true,
   "cleaningObjectId" : 1
-}, {
-  "clientId" : 2,
-  "name" : "bibka",
-  "address" : "cologne strasse 1123",
-  "hourlyRate" : 65,
-  "cleaningObjectId" : 2
 } ]

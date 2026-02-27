@@ -56,4 +56,19 @@ public class ConsoleIO {
         }
     }
 
+    public Boolean readBoolean(String prompt){
+        while(true){
+            System.out.println(prompt);
+            String input = scanner.nextLine().trim().toLowerCase();
+            if (input.equals("true")) {
+                return true;
+            }
+            if (input.equals("false")){
+                return false;
+            }
+
+            System.out.println("Invalid input. Please write true or false");
+        }
+    }
+
 }

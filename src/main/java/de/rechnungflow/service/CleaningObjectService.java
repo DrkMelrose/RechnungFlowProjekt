@@ -32,8 +32,10 @@ public class CleaningObjectService {
         storage.writeList(FILE_PATH, cleaningObjects);
     }
 
-    public CleaningObject createCleaningObject(int clientId, String name, String address, BigDecimal hourlyRate){
-        CleaningObject cleaningObject = new CleaningObject(nextId++, clientId, name, address, hourlyRate);
+    public CleaningObject createCleaningObject(int clientId, String name, String address, BigDecimal hourlyRate,
+                                               BigDecimal fixedMonthPrice, boolean active){
+        CleaningObject cleaningObject = new CleaningObject(nextId++, clientId, name, address, hourlyRate,
+                fixedMonthPrice, active);
         cleaningObjects.add(cleaningObject);
         saveToFile();
         return cleaningObject;

@@ -12,6 +12,8 @@ public class WorkLog {
     private int objectId;
     private LocalDate date;
     private BigDecimal hours;
+    private String description;
+    private boolean approved;
 
     @JsonCreator
     public WorkLog(
@@ -19,13 +21,17 @@ public class WorkLog {
             @JsonProperty("employeeId")int employeeId,
             @JsonProperty("objectId")int objectId,
             @JsonProperty("date")LocalDate date,
-            @JsonProperty("hours")BigDecimal hours
+            @JsonProperty("hours")BigDecimal hours,
+            @JsonProperty("description")String description,
+            @JsonProperty("approved")boolean approved
     ){
         this.id = id;
         this.employeeId = employeeId;
         this.objectId = objectId;
         this.date = date;
         this.hours = hours;
+        this.description = description;
+        this.approved = approved;
     }
 
     public int getId() { return id; }
@@ -33,4 +39,8 @@ public class WorkLog {
     public BigDecimal getHours() { return hours; }
     public int getEmployeeId() { return employeeId; }
     public int getObjectId() { return objectId; }
+    public String getDescription(){return description; }
+    public void setDescription(){this.description = description;}
+    public boolean getApprove(){return approved; }
+    public void setApprove(boolean approve){this.approved = approve;}
 }

@@ -32,8 +32,9 @@ public class WorkLogService {
 
     public void saveToFile(){ storage.writeList(FILE_PATH, workLogs);}
 
-    public WorkLog createWorkLog(int employeeId, int objectId, LocalDate date, BigDecimal hours){
-        WorkLog wl = new WorkLog(nextId++, employeeId, objectId, date, hours);
+    public WorkLog createWorkLog(int employeeId, int objectId, LocalDate date, BigDecimal hours,
+                                 String description, boolean approve){
+        WorkLog wl = new WorkLog(nextId++, employeeId, objectId, date, hours, description, approve);
         workLogs.add(wl);
         saveToFile();
         return wl;

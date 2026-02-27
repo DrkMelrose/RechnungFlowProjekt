@@ -80,7 +80,7 @@ public class CliApp {
             printCleaningObjectSummary(obj);
         }
 
-        int objectId = io.readInt("Object ID: ", 1, 100000);
+        int objectId = io.readInt("Object ID: ", 1, Integer.MAX_VALUE);
         Map<LocalDate, BigDecimal> hoursByDay = new TreeMap<>();
 
         for(WorkLog wl : workLogService.getAll()){
@@ -135,10 +135,17 @@ public class CliApp {
     public void createCleaningObject(){
         io.println("--- Create cleaning Object ---");
 
+        printClientsSummaryHeader();
+        for (Client cl : clientService.getAll()){
+            printClientsSummary(cl);
+        }
+
         int clientId = io.readInt("Client ID: ", 1, 1000000);
         String name = io.readLine("Object name: ");
         String address = io.readLine("Address of object: ");
         BigDecimal hourlyRate = io.readBigDecimal("Hourly rate: ");
+        BigDecimal fixedMonthPrice = io.readBigDecimal("Fixed month price: ");
+        boolean active = io.readBoolean("Is object active? true/false");
 
         Client client = clientService.findClientById(clientId);
 
@@ -147,7 +154,8 @@ public class CliApp {
             return;
         }
 
-        CleaningObject obj = cleaningObjectService.createCleaningObject(clientId, name, address, hourlyRate);
+        CleaningObject obj = cleaningObjectService.createCleaningObject(clientId, name, address, hourlyRate,
+                fixedMonthPrice, active);
         io.println("Cleaning object created. ID: " + obj.getCleaningObjectId());
     }
 
@@ -171,7 +179,7 @@ public class CliApp {
                 printEmployeesSummary(emp);
         }
 
-        int employeeId = io.readInt("Employee ID: ", 1, 1000000);
+        int employeeId = io.readInt("Employee ID: ", 1, Integer.MAX_VALUE);
 
         printCleaningObjectSummaryHeader();
         for (CleaningObject obj : cleaningObjectService.getAll()){
@@ -181,8 +189,10 @@ public class CliApp {
         int objectId = io.readInt("Object ID: ", 1, 1000000);
         LocalDate date = io.readDate("Date (YYYY-MM-DD)");
         BigDecimal hours = io.readBigDecimal("Hours (e.g. 7.5)");
+        String description = io.readLine("Description; ");
+        Boolean approve = io.readBoolean("true or false: ");
 
-        WorkLog wl = workLogService.createWorkLog(employeeId, objectId, date, hours);
+        WorkLog wl = workLogService.createWorkLog(employeeId, objectId, date, hours, description, approve);
 
         io.println("Work log added. ID: " + wl.getId());
     }
@@ -308,6 +318,28 @@ public class CliApp {
                 obj.getAddress(),
                 obj.getHourlyRate()
         );
+    }
+
+    private void printClientsSummaryHeader(){
+        System.out.printf(
+                "%-8s | %-15s | %-20.20s | %-30.30s | %-15s%n",
+                "ClientsId",
+                "Company name",
+                "Contact person",
+                "Email",
+                "Phone"
+        );
+    }
+
+    private void printClientsSummary(Client client){
+        System.out.printf(
+                "%-8s | %-15s | %-20.20s | %-30.30s | %-15s%n",
+                client.getId(),
+                client.getCompanyName(),
+                client.getContactPerson(),
+                client.getEmail(),
+                client.getPhone()
+                );
     }
 
     private void printCleaningObjectSummaryHeader(){
