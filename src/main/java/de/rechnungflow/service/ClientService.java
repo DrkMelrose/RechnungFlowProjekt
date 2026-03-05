@@ -48,4 +48,6 @@ public class ClientService {
     public List<Client> getAll(){
         return new ArrayList<>(clients);
     }
+
+    public void add(Client client){ clients.add(client); }
 }

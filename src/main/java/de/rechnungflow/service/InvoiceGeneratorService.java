@@ -51,6 +51,8 @@ public class InvoiceGeneratorService {
 
         Invoice invoice = invoiceService.createInvoice(client);
 
+        invoice.setWorkLogs(logs);
+
         String description = String.format(
                 "Cleaning service: %s (%s - %s)",
                 object.getName(), from, to

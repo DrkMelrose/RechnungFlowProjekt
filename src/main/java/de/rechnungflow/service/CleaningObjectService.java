@@ -51,4 +51,6 @@ public class CleaningObjectService {
     public List<CleaningObject> getAll(){
         return new ArrayList<>(cleaningObjects);
     }
+
+    public void add(CleaningObject obj){ cleaningObjects.add(obj); }
 }

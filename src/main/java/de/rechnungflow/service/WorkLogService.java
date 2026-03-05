@@ -50,4 +50,8 @@ public class WorkLogService {
     public List<WorkLog> getAll(){
         return new ArrayList<>(workLogs);
     }
+
+    public void add(WorkLog workLog){
+        workLogs.add(workLog);
+    }
 }

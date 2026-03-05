@@ -3,6 +3,7 @@ package de.rechnungflow.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import de.rechnungflow.service.WorkLogService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -19,6 +20,7 @@ public class Invoice {
     private static final ZoneId BUSINESS_ZONE = ZoneId.of("Europe/Berlin");
     private LocalDate issueDate = LocalDate.now(BUSINESS_ZONE);
     private LocalDate dueDate = issueDate.plusDays(14);
+    private List<WorkLog> workLogs = new ArrayList<>();
 
     private BigDecimal paidAmount = BigDecimal.ZERO;
 
@@ -47,7 +49,9 @@ public class Invoice {
         this.invoiceNumber = invoiceNumber;
     }
 
-
+    public void setWorkLogs(List<WorkLog> workLogs){
+        this.workLogs = workLogs;
+    }
 
 
     public void addItem(InvoiceItem item){
@@ -97,6 +101,13 @@ public class Invoice {
             if (line != null) total = total.add(line);
         }
         return total;
+    }
+
+    public BigDecimal getHoursInWorklogs(){
+        return workLogs.stream()
+                .map(WorkLog :: getHours)
+                .filter(h -> h != null)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public boolean hasItems(){
