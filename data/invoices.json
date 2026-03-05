@@ -9,9 +9,37 @@
   } ],
   "issueDate" : [ 2026, 3, 5 ],
   "dueDate" : [ 2026, 3, 19 ],
+  "workLogs" : [ {
+    "id" : 1,
+    "employeeId" : 1,
+    "objectId" : 1,
+    "date" : [ 2026, 3, 1 ],
+    "hours" : 8,
+    "description" : "Cleaning",
+    "approve" : true
+  }, {
+    "id" : 1,
+    "employeeId" : 1,
+    "objectId" : 1,
+    "date" : [ 2026, 3, 2 ],
+    "hours" : 10,
+    "description" : "Cleaning",
+    "approve" : true
+  }, {
+    "id" : 1,
+    "employeeId" : 1,
+    "objectId" : 1,
+    "date" : [ 2026, 3, 3 ],
+    "hours" : 7,
+    "description" : "Cleaning",
+    "approve" : true
+  } ],
   "paidAmount" : 0,
   "hoursInWorklogs" : 25,
   "totalAmount" : 1125,
+  "zeroAndEmpty" : false,
+  "openAmount" : 1125,
+  "fullyPaid" : false,
   "customer" : {
     "id" : 1,
     "companyName" : "Hello GmbH",
@@ -19,8 +47,5 @@
     "email" : "edwin@gmail.com",
     "phone" : "4912377171"
   },
-  "zeroAndEmpty" : false,
-  "openAmount" : 1125,
-  "fullyPaid" : false,
   "overpaidAmount" : 0
 } ]

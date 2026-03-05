@@ -49,8 +49,12 @@ public class Invoice {
         this.invoiceNumber = invoiceNumber;
     }
 
+    public List<WorkLog> getWorkLogs(){
+        return workLogs;
+    }
+
     public void setWorkLogs(List<WorkLog> workLogs){
-        this.workLogs = workLogs;
+        this.workLogs = new ArrayList<>(workLogs);
     }
 
 
