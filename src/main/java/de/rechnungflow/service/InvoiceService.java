@@ -22,6 +22,7 @@ public class InvoiceService {
     private static final Path FILE_PATH = Paths.get("data/invoices.json");
     private final List<Invoice> invoices = new ArrayList<>();
     private int nextInvoiceNumber = 1;
+    private final Path filePath;
     private final ObjectMapper mapper = new ObjectMapper()
             .findAndRegisterModules()
             .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -31,6 +32,15 @@ public class InvoiceService {
         nextInvoiceNumber++;
         invoices.add(invoice);
         return invoice;
+    }
+
+    public InvoiceService (Path filePath){
+        this.filePath = filePath;
+        loadFromFile();
+    }
+
+    public InvoiceService(){
+        this(Paths.get("data/invoices.json"));
     }
 
     public Optional<Invoice> findByNumber(int number){
@@ -63,13 +73,13 @@ public class InvoiceService {
     public void loadFromFile(){
         //ObjectMapper mapper = new ObjectMapper();
 
-        if (!Files.exists(FILE_PATH)){
+        if (!Files.exists(filePath)){
             return;
         }
 
         try {
             List<Invoice> loaded = mapper.readValue(
-                    FILE_PATH.toFile(),
+                    filePath.toFile(),
                     new TypeReference<List<Invoice>>() {}
             );
             invoices.clear();
@@ -93,17 +103,17 @@ public class InvoiceService {
         //ObjectMapper mapper = new ObjectMapper();
 
         try{
-            Path parent = FILE_PATH.getParent();
+            Path parent = filePath.getParent();
             if (parent != null){
                 Files.createDirectories(parent);
             }
 
-            Path tmp = FILE_PATH.resolveSibling(FILE_PATH.getFileName() + ".tmp");
+            Path tmp = filePath.resolveSibling(filePath.getFileName() + ".tmp");
 
             mapper.writerWithDefaultPrettyPrinter()
                     .writeValue(tmp.toFile(), invoices);
 
-            Files.move(tmp, FILE_PATH,
+            Files.move(tmp, filePath,
                     StandardCopyOption.REPLACE_EXISTING,
                     StandardCopyOption.ATOMIC_MOVE);
 
@@ -148,6 +158,10 @@ public class InvoiceService {
 
     public boolean isEmpty(){
         return invoices.isEmpty();
+    }
+
+    public void add(Invoice invoice){
+        invoices.add(invoice);
     }
 
 

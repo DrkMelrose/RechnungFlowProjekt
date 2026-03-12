@@ -35,11 +35,7 @@
     "approve" : true
   } ],
   "paidAmount" : 0,
-  "hoursInWorklogs" : 25,
   "totalAmount" : 1125,
-  "zeroAndEmpty" : false,
-  "openAmount" : 1125,
-  "fullyPaid" : false,
   "customer" : {
     "id" : 1,
     "companyName" : "Hello GmbH",
@@ -47,5 +43,51 @@
     "email" : "edwin@gmail.com",
     "phone" : "4912377171"
   },
-  "overpaidAmount" : 0
+  "openAmount" : 1125,
+  "overpaidAmount" : 0,
+  "hoursInWorklogs" : 25,
+  "zeroAndEmpty" : false,
+  "fullyPaid" : false
+}, {
+  "invoiceNumber" : 1,
+  "status" : "DRAFT",
+  "items" : [ ],
+  "issueDate" : [ 2026, 3, 12 ],
+  "dueDate" : [ 2026, 3, 26 ],
+  "workLogs" : [ ],
+  "paidAmount" : 0,
+  "totalAmount" : 0,
+  "customer" : {
+    "id" : 1,
+    "companyName" : "Frisches Brot GmbH",
+    "contactPerson" : "Monica Zellincki",
+    "email" : "monica@gmail.com",
+    "phone" : "123671263"
+  },
+  "openAmount" : 0,
+  "overpaidAmount" : 0,
+  "hoursInWorklogs" : 0,
+  "zeroAndEmpty" : true,
+  "fullyPaid" : false
+}, {
+  "invoiceNumber" : 2,
+  "status" : "DRAFT",
+  "items" : [ ],
+  "issueDate" : [ 2026, 3, 12 ],
+  "dueDate" : [ 2026, 3, 26 ],
+  "workLogs" : [ ],
+  "paidAmount" : 0,
+  "totalAmount" : 0,
+  "customer" : {
+    "id" : 2,
+    "companyName" : "AmigoSecurityGmbH",
+    "contactPerson" : "Edward Paßgang",
+    "email" : "eddi@gmail.com",
+    "phone" : "1273712783"
+  },
+  "openAmount" : 0,
+  "overpaidAmount" : 0,
+  "hoursInWorklogs" : 0,
+  "zeroAndEmpty" : true,
+  "fullyPaid" : false
 } ]

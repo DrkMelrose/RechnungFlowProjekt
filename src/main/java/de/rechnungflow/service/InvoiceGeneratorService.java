@@ -27,7 +27,7 @@ public class InvoiceGeneratorService {
 
     public Invoice generateInvoiceForObject(int objectId, LocalDate from, LocalDate to){
 
-        CleaningObject object = cleaningObjectService.findCleaningObjectById(objectId);
+        CleaningObject object = cleaningObjectService.findCleaningObjectById(objectId).orElseThrow();
         if (object == null){
             return null;
         }

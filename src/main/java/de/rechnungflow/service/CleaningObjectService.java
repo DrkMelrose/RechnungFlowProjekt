@@ -6,19 +6,31 @@ import de.rechnungflow.persistance.JsonStorage;
 
 import java.math.BigDecimal;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class CleaningObjectService {
 
     private final static Path FILE_PATH = Path.of("data", "cleaningObject.json");
     private final JsonStorage storage = new JsonStorage();
+    private final Path filePath;
 
     private int nextId = 1;
     private final List<CleaningObject> cleaningObjects = new ArrayList<>();
 
+    public CleaningObjectService(Path filePath){
+        this.filePath = filePath;
+        loadFromFile();
+    }
+
+    public CleaningObjectService(){
+        this(Paths.get("cleaningObject.json"));
+    }
+
     public void loadFromFile(){
-        List<CleaningObject> loaded = storage.readList(FILE_PATH, new TypeReference<List<CleaningObject>>() {});
+        List<CleaningObject> loaded = storage.readList(filePath, new TypeReference<List<CleaningObject>>() {});
         cleaningObjects.clear();
         cleaningObjects.addAll(loaded);
 
@@ -29,7 +41,7 @@ public class CleaningObjectService {
     }
 
     public void saveToFile(){
-        storage.writeList(FILE_PATH, cleaningObjects);
+        storage.writeList(filePath, cleaningObjects);
     }
 
     public CleaningObject createCleaningObject(int clientId, String name, String address, BigDecimal hourlyRate,
@@ -41,11 +53,10 @@ public class CleaningObjectService {
         return cleaningObject;
     }
 
-    public CleaningObject findCleaningObjectById(int id){
+    public Optional<CleaningObject> findCleaningObjectById(int id){
         return cleaningObjects.stream()
                 .filter(o -> o.getCleaningObjectId() == id)
-                .findFirst()
-                .orElse(null);
+                .findFirst();
     }
 
     public List<CleaningObject> getAll(){
