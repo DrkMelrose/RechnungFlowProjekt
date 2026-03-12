@@ -10,13 +10,14 @@ import java.nio.file.Path;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class InvoiceGeneratorServicePersistenceTest {
+public class InvoiceGeneratorServiceIntegrationTest {
     @TempDir
     Path tempDir;
 
     @Test
-    public void saveAndLoad_roadtrip_invoiceGeneratorService(){
+    public void saveAndLoad_roadtrip_invoiceGeneratorServiceIntegration(){
         //GIVEN
         Path file = tempDir.resolve("invoices.json");
         InvoiceService invoiceService = new InvoiceService(file);
@@ -38,25 +39,29 @@ public class InvoiceGeneratorServicePersistenceTest {
 
         WorkLog wl1 = new WorkLog(1, 1, 1, LocalDate.of(2026, 3, 8), new BigDecimal("7"), "floor and windows cleaning", true);
 
-        Invoice invoice1 = new Invoice(1, client);
-
-        invoiceService.add(invoice1);
         workLogService.add(wl1);
         cleaningObjectService.add(obj1);
         clientService.add(client);
         employeeService.add(emp1);
 
-        invoiceGeneratorService.generateInvoiceForObject(1,LocalDate.of(2026, 03,01), LocalDate.of(2026,03,31));
+        Invoice created =
+                invoiceGeneratorService.generateInvoiceForObject(
+                        1,
+                        LocalDate.of(2026, 03,01),
+                        LocalDate.of(2026,03,31)
+                );
 
 
         //WHEN
-        invoiceService.saveToFile();
-        InvoiceService invoiceService2 = new InvoiceService(file);
 
         //THEN
-        assertEquals(2, invoiceService2.getAll().size(), "The invoice number must be same");
-        Invoice loaded1 = invoiceService2.findByNumber(1).orElseThrow();
+        assertNotNull(created);
+        assertEquals(1, invoiceService.getAll().size(), "The invoice number must be same");
 
+        InvoiceService reloaded = new InvoiceService(file);
+        assertEquals(1, reloaded.getAll().size());
 
+        Invoice loaded = reloaded.findByNumber(created.getInvoiceNumber()).orElseThrow();
+        assertEquals("BoratGmbH", loaded.getCustomer().getCompanyName());
     }
 }

@@ -51,5 +51,8 @@ public class InvoiceServicePersistenceTest {
         assertEquals(2, loaded2.getInvoiceNumber());
         assertEquals("AmigoSecurityGmbH", loaded2.getCustomer().getCompanyName());
 
+        //nextID test
+        Invoice created = invoiceService2.createInvoice(client1);
+        assertEquals(3, created.getInvoiceNumber());
     }
 }

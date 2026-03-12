@@ -48,4 +48,8 @@ public class EmployeeService {
         return new ArrayList<>(employees);
     }
 
+    public void add(Employee employee){
+        employees.add(employee);
+    }
+
 }
