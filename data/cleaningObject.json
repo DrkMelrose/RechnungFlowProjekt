@@ -1,9 +1,0 @@
-[ {
-  "clientId" : 1,
-  "name" : "Gomo Apartaments",
-  "address" : "sexystraße 123123",
-  "hourlyRate" : 69,
-  "fixedMonthPrice" : 800,
-  "active" : true,
-  "cleaningObjectId" : 1
-} ]
