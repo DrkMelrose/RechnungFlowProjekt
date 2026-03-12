@@ -5,6 +5,7 @@ import de.rechnungflow.model.Client;
 import de.rechnungflow.persistance.JsonStorage;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,9 +16,10 @@ public class ClientService {
 
     private int nextId = 1;
     private final List<Client> clients = new ArrayList<>();
+    private final Path filePath;
 
     public void loadFromFile(){
-        List<Client> loaded = storage.readList(FILE_PATH, new TypeReference<>() {});
+        List<Client> loaded = storage.readList(filePath, new TypeReference<>() {});
         clients.clear();
         clients.addAll(loaded);
 
@@ -27,8 +29,17 @@ public class ClientService {
                 .orElse(0) + 1;
     }
 
+    public ClientService(Path filePath){
+        this.filePath = filePath;
+        loadFromFile();
+    }
+
+    public ClientService(){
+        this(Paths.get("data/clients.json"));
+    }
+
     public void saveToFile(){
-        storage.writeList(FILE_PATH, clients);
+        storage.writeList(filePath, clients);
     }
 
     public Client createClient(String companyName, String contactPerson, String email, String phone){
