@@ -1,6 +1,11 @@
 [ {
-  "employeesId" : 1,
+  "phoneOfEmployee" : "4912737123",
   "nameOfEmployee" : "Masha",
-  "emailOfEmployee" : "ioioio12@gmail.com",
-  "phoneOfEmployee" : "4912737123"
+  "employeesId" : 1,
+  "emailOfEmployee" : "ioioio12@gmail.com"
+}, {
+  "phoneOfEmployee" : "23882838",
+  "nameOfEmployee" : "AliceWeidel",
+  "employeesId" : 1,
+  "emailOfEmployee" : "aliceweidel@gmail.com"
 } ]

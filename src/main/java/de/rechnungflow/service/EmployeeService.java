@@ -5,6 +5,7 @@ import de.rechnungflow.model.Employee;
 import de.rechnungflow.persistance.JsonStorage;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,11 +13,21 @@ public class EmployeeService {
 
     private static final Path FILE_PATH = Path.of("data", "employees.json");
     private final JsonStorage storage = new JsonStorage();
+    private final Path filePath;
     private int nextId = 1;
     private final List<Employee> employees = new ArrayList<>();
 
+    public EmployeeService(Path filePath){
+        this.filePath = filePath;
+        loadFromFile();
+    }
+
+    public EmployeeService(){
+        this(Paths.get("data/employees,json"));
+    }
+
     public void loadFromFile(){
-        List <Employee> loaded = storage.readList(FILE_PATH, new TypeReference<List<Employee>>(){});
+        List <Employee> loaded = storage.readList(filePath, new TypeReference<List<Employee>>(){});
         employees.clear();
         employees.addAll(loaded);
 
@@ -27,7 +38,7 @@ public class EmployeeService {
     }
 
     public void saveToFile(){
-        storage.writeList(FILE_PATH, employees);
+        storage.writeList(filePath, employees);
     }
 
     public Employee createEmployee(String name, String phone, String email){
