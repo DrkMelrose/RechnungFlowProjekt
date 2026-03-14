@@ -2,6 +2,7 @@ package de.rechnungflow.service;
 
 import de.rechnungflow.model.*;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Path;
 import java.time.LocalDate;
@@ -26,9 +27,9 @@ public class InvoiceGeneratorService {
     }
 
 
-    public Invoice generateInvoiceForObject(int objectId, LocalDate from, LocalDate to){
+    public Invoice generateInvoiceForObject(int objectId, LocalDate from, LocalDate to) {
 
-        CleaningObject object = cleaningObjectService.findCleaningObjectById(objectId).orElseThrow();
+        CleaningObject object = cleaningObjectService.findCleaningObjectById(objectId).orElse(null);
         if (object == null){
             return null;
         }

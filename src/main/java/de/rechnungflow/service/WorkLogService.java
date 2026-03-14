@@ -36,8 +36,12 @@ public class WorkLogService {
             LocalDate date,
             BigDecimal hours,
             String description,
-            boolean approved
-    ){
+            boolean approved){
+        if (hours == null || hours.compareTo(BigDecimal.ZERO) <= 0){
+            return null;
+        }
+
+
         WorkLog workLog = new WorkLog(
                 nextId++,
                 employeeId,
@@ -69,6 +73,9 @@ public class WorkLogService {
 
     public WorkLog createWorkLog(int employeeId, int objectId, LocalDate date, BigDecimal hours,
                                  String description, boolean approve){
+        if (hours == null || hours.compareTo(BigDecimal.ZERO) <= 0){
+            return null;
+        }
         WorkLog wl = new WorkLog(nextId++, employeeId, objectId, date, hours, description, approve);
         workLogs.add(wl);
         saveToFile();
