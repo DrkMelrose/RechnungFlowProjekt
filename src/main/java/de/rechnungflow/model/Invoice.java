@@ -98,14 +98,16 @@ public class Invoice {
         if (items == null || items.isEmpty()) return BigDecimal.ZERO;
 
         BigDecimal total = BigDecimal.ZERO;
-        for (InvoiceItem it : items){
+        for (InvoiceItem it : items) {
             if (it == null) continue;
 
             BigDecimal line = it.getTotal();
             if (line != null) total = total.add(line);
+
         }
         return total;
     }
+
 
     public BigDecimal getHoursInWorklogs(){
         return workLogs.stream()

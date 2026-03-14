@@ -1,0 +1,65 @@
+[ {
+  "clientId" : 1,
+  "name" : "WaschService",
+  "address" : "Anna-Helmut Straße 123",
+  "hourlyRate" : 25,
+  "fixedMonthPrice" : 1800,
+  "active" : true,
+  "cleaningObjectId" : 1
+}, {
+  "clientId" : 1,
+  "name" : "WaschService",
+  "address" : "Anna-Helmut Straße 123",
+  "hourlyRate" : 25,
+  "fixedMonthPrice" : 1800,
+  "active" : true,
+  "cleaningObjectId" : 1
+}, {
+  "clientId" : 1,
+  "name" : "WaschService",
+  "address" : "Anna-Helmut Straße 123",
+  "hourlyRate" : 25,
+  "fixedMonthPrice" : 1800,
+  "active" : true,
+  "cleaningObjectId" : 1
+}, {
+  "clientId" : 1,
+  "name" : "WaschService",
+  "address" : "Anna-Helmut Straße 123",
+  "hourlyRate" : 25,
+  "fixedMonthPrice" : 1800,
+  "active" : true,
+  "cleaningObjectId" : 1
+}, {
+  "clientId" : 1,
+  "name" : "WaschService",
+  "address" : "Anna-Helmut Straße 123",
+  "hourlyRate" : 25,
+  "fixedMonthPrice" : 1800,
+  "active" : true,
+  "cleaningObjectId" : 1
+}, {
+  "clientId" : 1,
+  "name" : "WaschService",
+  "address" : "Anna-Helmut Straße 123",
+  "hourlyRate" : 25,
+  "fixedMonthPrice" : 1800,
+  "active" : true,
+  "cleaningObjectId" : 1
+}, {
+  "clientId" : 1,
+  "name" : "WaschService",
+  "address" : "Anna-Helmut Straße 123",
+  "hourlyRate" : 25,
+  "fixedMonthPrice" : 1800,
+  "active" : true,
+  "cleaningObjectId" : 1
+}, {
+  "clientId" : 1,
+  "name" : "WaschService",
+  "address" : "Anna-Helmut Straße 123",
+  "hourlyRate" : 25,
+  "fixedMonthPrice" : 1800,
+  "active" : true,
+  "cleaningObjectId" : 1
+} ]

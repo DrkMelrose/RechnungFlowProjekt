@@ -1,0 +1,167 @@
+[ {
+  "invoiceNumber" : 1,
+  "status" : "DRAFT",
+  "items" : [ ],
+  "issueDate" : [ 2026, 3, 13 ],
+  "dueDate" : [ 2026, 3, 27 ],
+  "workLogs" : [ ],
+  "paidAmount" : 0,
+  "totalAmount" : 0,
+  "overpaidAmount" : 0,
+  "customer" : {
+    "id" : 1,
+    "companyName" : "VasyanGmbH",
+    "contactPerson" : "Vasya Pupkin",
+    "email" : "vasiv@gmail.com",
+    "phone" : "23488234828"
+  },
+  "openAmount" : 0,
+  "zeroAndEmpty" : true,
+  "hoursInWorklogs" : 0,
+  "fullyPaid" : false
+}, {
+  "invoiceNumber" : 1,
+  "status" : "DRAFT",
+  "items" : [ {
+    "description" : "Cleaning service: WaschService (2026-03-01 - 2026-03-31)",
+    "hours" : 22,
+    "price" : 25,
+    "total" : 550
+  } ],
+  "issueDate" : [ 2026, 3, 13 ],
+  "dueDate" : [ 2026, 3, 27 ],
+  "workLogs" : [ {
+    "id" : 1,
+    "employeeId" : 1,
+    "objectId" : 1,
+    "date" : [ 2026, 3, 10 ],
+    "hours" : 7,
+    "description" : "floor cleaning",
+    "approve" : true
+  }, {
+    "id" : 1,
+    "employeeId" : 1,
+    "objectId" : 1,
+    "date" : [ 2026, 3, 11 ],
+    "hours" : 10,
+    "description" : "windows cleaning",
+    "approve" : true
+  }, {
+    "id" : 1,
+    "employeeId" : 1,
+    "objectId" : 1,
+    "date" : [ 2026, 3, 12 ],
+    "hours" : 5,
+    "description" : "Hall cleaning",
+    "approve" : true
+  } ],
+  "paidAmount" : 0,
+  "totalAmount" : 550,
+  "overpaidAmount" : 0,
+  "customer" : {
+    "id" : 1,
+    "companyName" : "OPANA GMbH",
+    "contactPerson" : "Gomo Drei",
+    "email" : "gomik@gmail.com",
+    "phone" : "4912377217"
+  },
+  "openAmount" : 550,
+  "zeroAndEmpty" : false,
+  "hoursInWorklogs" : 22,
+  "fullyPaid" : false
+}, {
+  "invoiceNumber" : 1,
+  "status" : "DRAFT",
+  "items" : [ ],
+  "issueDate" : [ 2026, 3, 13 ],
+  "dueDate" : [ 2026, 3, 27 ],
+  "workLogs" : [ ],
+  "paidAmount" : 0,
+  "totalAmount" : 0,
+  "overpaidAmount" : 0,
+  "customer" : {
+    "id" : 1,
+    "companyName" : "VasyanGmbH",
+    "contactPerson" : "Vasya Pupkin",
+    "email" : "vasiv@gmail.com",
+    "phone" : "23488234828"
+  },
+  "openAmount" : 0,
+  "zeroAndEmpty" : true,
+  "hoursInWorklogs" : 0,
+  "fullyPaid" : false
+}, {
+  "invoiceNumber" : 2,
+  "status" : "DRAFT",
+  "items" : [ {
+    "description" : "Cleaning service: WaschService (2026-03-01 - 2026-03-31)",
+    "hours" : 44,
+    "price" : 25,
+    "total" : 1100
+  } ],
+  "issueDate" : [ 2026, 3, 13 ],
+  "dueDate" : [ 2026, 3, 27 ],
+  "workLogs" : [ {
+    "id" : 1,
+    "employeeId" : 1,
+    "objectId" : 1,
+    "date" : [ 2026, 3, 10 ],
+    "hours" : 7,
+    "description" : "floor cleaning",
+    "approve" : true
+  }, {
+    "id" : 1,
+    "employeeId" : 1,
+    "objectId" : 1,
+    "date" : [ 2026, 3, 11 ],
+    "hours" : 10,
+    "description" : "windows cleaning",
+    "approve" : true
+  }, {
+    "id" : 1,
+    "employeeId" : 1,
+    "objectId" : 1,
+    "date" : [ 2026, 3, 12 ],
+    "hours" : 5,
+    "description" : "Hall cleaning",
+    "approve" : true
+  }, {
+    "id" : 1,
+    "employeeId" : 1,
+    "objectId" : 1,
+    "date" : [ 2026, 3, 10 ],
+    "hours" : 7,
+    "description" : "floor cleaning",
+    "approve" : true
+  }, {
+    "id" : 1,
+    "employeeId" : 1,
+    "objectId" : 1,
+    "date" : [ 2026, 3, 11 ],
+    "hours" : 10,
+    "description" : "windows cleaning",
+    "approve" : true
+  }, {
+    "id" : 1,
+    "employeeId" : 1,
+    "objectId" : 1,
+    "date" : [ 2026, 3, 12 ],
+    "hours" : 5,
+    "description" : "Hall cleaning",
+    "approve" : true
+  } ],
+  "paidAmount" : 0,
+  "totalAmount" : 1100,
+  "overpaidAmount" : 0,
+  "customer" : {
+    "id" : 1,
+    "companyName" : "OPANA GMbH",
+    "contactPerson" : "Gomo Drei",
+    "email" : "gomik@gmail.com",
+    "phone" : "4912377217"
+  },
+  "openAmount" : 1100,
+  "zeroAndEmpty" : false,
+  "hoursInWorklogs" : 44,
+  "fullyPaid" : false
+} ]
