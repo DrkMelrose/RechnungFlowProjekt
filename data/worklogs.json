@@ -1,9 +1,0 @@
-[ {
-  "id" : 1,
-  "employeeId" : 1,
-  "objectId" : 1,
-  "date" : "2026-03-14",
-  "hours" : 0,
-  "description" : "something",
-  "approve" : true
-} ]

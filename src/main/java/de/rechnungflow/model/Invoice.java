@@ -139,7 +139,24 @@ public class Invoice {
             throw new IllegalStateException("Payment amount must be positive");
         }
 
-        paidAmount = paidAmount.add(amount);
+        if (paidAmount == null){
+            paidAmount = BigDecimal.ZERO;
+        }
+
+        BigDecimal total = getTotalAmount();
+        if (total == null || total.compareTo(BigDecimal.ZERO)<= 0){
+            throw new IllegalStateException("Invoice total must be postive");
+        }
+
+        BigDecimal newPaidAmount = paidAmount.add(amount);
+
+        if (newPaidAmount.compareTo(total) >= 0){
+            paidAmount = total;
+            status = InvoiceStatus.PAID;
+        } else {
+            paidAmount = newPaidAmount;
+            status = InvoiceStatus.PARTIALLY_PAID;
+        }
 
         if (isFullyPaid()){
             status = InvoiceStatus.PAID;
@@ -223,7 +240,6 @@ public class Invoice {
 
         this.status = InvoiceStatus.PAID;
     }
-
 
     private void ensureNotCancelled(){
         if (status == InvoiceStatus.CANCELLED){

@@ -40,6 +40,9 @@ public class InvoiceGeneratorService {
         }
 
         List<WorkLog> logs = workLogService.findByObjectAndPeriod(objectId, from, to);
+        if (logs.isEmpty()){
+            return null;
+        }
 
         BigDecimal totalHours = logs.stream()
                 .map(WorkLog::getHours)

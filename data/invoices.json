@@ -1,0 +1,397 @@
+[ {
+  "invoiceNumber" : 1,
+  "status" : "DRAFT",
+  "items" : [ {
+    "description" : "Cleaning service: SomeGmbH (2026-03-01 - 2026-03-31)",
+    "hours" : 13,
+    "price" : 45,
+    "total" : 585
+  } ],
+  "issueDate" : [ 2026, 3, 20 ],
+  "dueDate" : [ 2026, 4, 3 ],
+  "workLogs" : [ {
+    "id" : 100,
+    "employeeId" : 1,
+    "objectId" : 1,
+    "date" : [ 2026, 3, 2 ],
+    "hours" : 8,
+    "description" : "cleaning",
+    "approve" : true
+  }, {
+    "id" : 101,
+    "employeeId" : 1,
+    "objectId" : 1,
+    "date" : [ 2026, 3, 5 ],
+    "hours" : 5,
+    "description" : "cleaning",
+    "approve" : true
+  } ],
+  "paidAmount" : 0,
+  "customer" : {
+    "id" : 1,
+    "companyName" : "Some GmbH",
+    "contactPerson" : "Tomas",
+    "email" : "hohoho@gmail.com",
+    "phone" : "32364782364"
+  },
+  "hoursInWorklogs" : 13,
+  "totalAmount" : 585,
+  "overpaidAmount" : 0,
+  "fullyPaid" : false,
+  "openAmount" : 585,
+  "zeroAndEmpty" : false
+}, {
+  "invoiceNumber" : 2,
+  "status" : "DRAFT",
+  "items" : [ {
+    "description" : "Cleaning service: Hello GmbH (2026-03-01 - 2026-03-03)",
+    "hours" : 25,
+    "price" : 45,
+    "total" : 1125
+  } ],
+  "issueDate" : [ 2026, 3, 20 ],
+  "dueDate" : [ 2026, 4, 3 ],
+  "workLogs" : [ {
+    "id" : 1,
+    "employeeId" : 1,
+    "objectId" : 1,
+    "date" : [ 2026, 3, 1 ],
+    "hours" : 8,
+    "description" : "Cleaning",
+    "approve" : true
+  }, {
+    "id" : 1,
+    "employeeId" : 1,
+    "objectId" : 1,
+    "date" : [ 2026, 3, 2 ],
+    "hours" : 10,
+    "description" : "Cleaning",
+    "approve" : true
+  }, {
+    "id" : 1,
+    "employeeId" : 1,
+    "objectId" : 1,
+    "date" : [ 2026, 3, 3 ],
+    "hours" : 7,
+    "description" : "Cleaning",
+    "approve" : true
+  } ],
+  "paidAmount" : 0,
+  "customer" : {
+    "id" : 1,
+    "companyName" : "Hello GmbH",
+    "contactPerson" : "Edwin",
+    "email" : "edwin@gmail.com",
+    "phone" : "4912377171"
+  },
+  "hoursInWorklogs" : 25,
+  "totalAmount" : 1125,
+  "overpaidAmount" : 0,
+  "fullyPaid" : false,
+  "openAmount" : 1125,
+  "zeroAndEmpty" : false
+}, {
+  "invoiceNumber" : 3,
+  "status" : "DRAFT",
+  "items" : [ {
+    "description" : "Cleaning service: SomeGmbH (2026-03-01 - 2026-03-31)",
+    "hours" : 13,
+    "price" : 45,
+    "total" : 585
+  } ],
+  "issueDate" : [ 2026, 3, 20 ],
+  "dueDate" : [ 2026, 4, 3 ],
+  "workLogs" : [ {
+    "id" : 100,
+    "employeeId" : 1,
+    "objectId" : 1,
+    "date" : [ 2026, 3, 2 ],
+    "hours" : 8,
+    "description" : "cleaning",
+    "approve" : true
+  }, {
+    "id" : 101,
+    "employeeId" : 1,
+    "objectId" : 1,
+    "date" : [ 2026, 3, 5 ],
+    "hours" : 5,
+    "description" : "cleaning",
+    "approve" : true
+  } ],
+  "paidAmount" : 0,
+  "customer" : {
+    "id" : 1,
+    "companyName" : "Some GmbH",
+    "contactPerson" : "Tomas",
+    "email" : "hohoho@gmail.com",
+    "phone" : "32364782364"
+  },
+  "hoursInWorklogs" : 13,
+  "totalAmount" : 585,
+  "overpaidAmount" : 0,
+  "fullyPaid" : false,
+  "openAmount" : 585,
+  "zeroAndEmpty" : false
+}, {
+  "invoiceNumber" : 4,
+  "status" : "PAID",
+  "items" : [ {
+    "description" : "Ball",
+    "hours" : 2,
+    "price" : 79.12,
+    "total" : 158.24
+  } ],
+  "issueDate" : [ 2026, 3, 20 ],
+  "dueDate" : [ 2026, 4, 3 ],
+  "workLogs" : [ ],
+  "paidAmount" : 158.24,
+  "customer" : {
+    "id" : 0,
+    "companyName" : "Gosha",
+    "contactPerson" : "123123",
+    "email" : "koko",
+    "phone" : "123"
+  },
+  "hoursInWorklogs" : 0,
+  "totalAmount" : 158.24,
+  "overpaidAmount" : 0.00,
+  "fullyPaid" : true,
+  "openAmount" : 0.00,
+  "zeroAndEmpty" : false
+}, {
+  "invoiceNumber" : 5,
+  "status" : "DRAFT",
+  "items" : [ {
+    "description" : "Cleaning service: Hello GmbH (2026-03-01 - 2026-03-03)",
+    "hours" : 25,
+    "price" : 45,
+    "total" : 1125
+  } ],
+  "issueDate" : [ 2026, 3, 21 ],
+  "dueDate" : [ 2026, 4, 4 ],
+  "workLogs" : [ {
+    "id" : 1,
+    "employeeId" : 1,
+    "objectId" : 1,
+    "date" : [ 2026, 3, 1 ],
+    "hours" : 8,
+    "description" : "Cleaning",
+    "approve" : true
+  }, {
+    "id" : 1,
+    "employeeId" : 1,
+    "objectId" : 1,
+    "date" : [ 2026, 3, 2 ],
+    "hours" : 10,
+    "description" : "Cleaning",
+    "approve" : true
+  }, {
+    "id" : 1,
+    "employeeId" : 1,
+    "objectId" : 1,
+    "date" : [ 2026, 3, 3 ],
+    "hours" : 7,
+    "description" : "Cleaning",
+    "approve" : true
+  } ],
+  "paidAmount" : 0,
+  "customer" : {
+    "id" : 1,
+    "companyName" : "Hello GmbH",
+    "contactPerson" : "Edwin",
+    "email" : "edwin@gmail.com",
+    "phone" : "4912377171"
+  },
+  "hoursInWorklogs" : 25,
+  "totalAmount" : 1125,
+  "overpaidAmount" : 0,
+  "fullyPaid" : false,
+  "openAmount" : 1125,
+  "zeroAndEmpty" : false
+}, {
+  "invoiceNumber" : 6,
+  "status" : "DRAFT",
+  "items" : [ {
+    "description" : "Cleaning service: SomeGmbH (2026-03-01 - 2026-03-31)",
+    "hours" : 13,
+    "price" : 45,
+    "total" : 585
+  } ],
+  "issueDate" : [ 2026, 3, 21 ],
+  "dueDate" : [ 2026, 4, 4 ],
+  "workLogs" : [ {
+    "id" : 100,
+    "employeeId" : 1,
+    "objectId" : 1,
+    "date" : [ 2026, 3, 2 ],
+    "hours" : 8,
+    "description" : "cleaning",
+    "approve" : true
+  }, {
+    "id" : 101,
+    "employeeId" : 1,
+    "objectId" : 1,
+    "date" : [ 2026, 3, 5 ],
+    "hours" : 5,
+    "description" : "cleaning",
+    "approve" : true
+  } ],
+  "paidAmount" : 0,
+  "customer" : {
+    "id" : 1,
+    "companyName" : "Some GmbH",
+    "contactPerson" : "Tomas",
+    "email" : "hohoho@gmail.com",
+    "phone" : "32364782364"
+  },
+  "hoursInWorklogs" : 13,
+  "totalAmount" : 585,
+  "overpaidAmount" : 0,
+  "fullyPaid" : false,
+  "openAmount" : 585,
+  "zeroAndEmpty" : false
+}, {
+  "invoiceNumber" : 7,
+  "status" : "PAID",
+  "items" : [ {
+    "description" : "Ball",
+    "hours" : 2,
+    "price" : 79.12,
+    "total" : 158.24
+  } ],
+  "issueDate" : [ 2026, 3, 21 ],
+  "dueDate" : [ 2026, 4, 4 ],
+  "workLogs" : [ ],
+  "paidAmount" : 158.24,
+  "customer" : {
+    "id" : 0,
+    "companyName" : "Gosha",
+    "contactPerson" : "123123",
+    "email" : "koko",
+    "phone" : "123"
+  },
+  "hoursInWorklogs" : 0,
+  "totalAmount" : 158.24,
+  "overpaidAmount" : 0.00,
+  "fullyPaid" : true,
+  "openAmount" : 0.00,
+  "zeroAndEmpty" : false
+}, {
+  "invoiceNumber" : 8,
+  "status" : "DRAFT",
+  "items" : [ {
+    "description" : "Cleaning service: Hello GmbH (2026-03-01 - 2026-03-03)",
+    "hours" : 25,
+    "price" : 45,
+    "total" : 1125
+  } ],
+  "issueDate" : [ 2026, 3, 21 ],
+  "dueDate" : [ 2026, 4, 4 ],
+  "workLogs" : [ {
+    "id" : 1,
+    "employeeId" : 1,
+    "objectId" : 1,
+    "date" : [ 2026, 3, 1 ],
+    "hours" : 8,
+    "description" : "Cleaning",
+    "approve" : true
+  }, {
+    "id" : 1,
+    "employeeId" : 1,
+    "objectId" : 1,
+    "date" : [ 2026, 3, 2 ],
+    "hours" : 10,
+    "description" : "Cleaning",
+    "approve" : true
+  }, {
+    "id" : 1,
+    "employeeId" : 1,
+    "objectId" : 1,
+    "date" : [ 2026, 3, 3 ],
+    "hours" : 7,
+    "description" : "Cleaning",
+    "approve" : true
+  } ],
+  "paidAmount" : 0,
+  "customer" : {
+    "id" : 1,
+    "companyName" : "Hello GmbH",
+    "contactPerson" : "Edwin",
+    "email" : "edwin@gmail.com",
+    "phone" : "4912377171"
+  },
+  "hoursInWorklogs" : 25,
+  "totalAmount" : 1125,
+  "overpaidAmount" : 0,
+  "fullyPaid" : false,
+  "openAmount" : 1125,
+  "zeroAndEmpty" : false
+}, {
+  "invoiceNumber" : 9,
+  "status" : "DRAFT",
+  "items" : [ {
+    "description" : "Cleaning service: SomeGmbH (2026-03-01 - 2026-03-31)",
+    "hours" : 13,
+    "price" : 45,
+    "total" : 585
+  } ],
+  "issueDate" : [ 2026, 3, 21 ],
+  "dueDate" : [ 2026, 4, 4 ],
+  "workLogs" : [ {
+    "id" : 100,
+    "employeeId" : 1,
+    "objectId" : 1,
+    "date" : [ 2026, 3, 2 ],
+    "hours" : 8,
+    "description" : "cleaning",
+    "approve" : true
+  }, {
+    "id" : 101,
+    "employeeId" : 1,
+    "objectId" : 1,
+    "date" : [ 2026, 3, 5 ],
+    "hours" : 5,
+    "description" : "cleaning",
+    "approve" : true
+  } ],
+  "paidAmount" : 0,
+  "customer" : {
+    "id" : 1,
+    "companyName" : "Some GmbH",
+    "contactPerson" : "Tomas",
+    "email" : "hohoho@gmail.com",
+    "phone" : "32364782364"
+  },
+  "hoursInWorklogs" : 13,
+  "totalAmount" : 585,
+  "overpaidAmount" : 0,
+  "fullyPaid" : false,
+  "openAmount" : 585,
+  "zeroAndEmpty" : false
+}, {
+  "invoiceNumber" : 10,
+  "status" : "PAID",
+  "items" : [ {
+    "description" : "Ball",
+    "hours" : 2,
+    "price" : 79.12,
+    "total" : 158.24
+  } ],
+  "issueDate" : [ 2026, 3, 21 ],
+  "dueDate" : [ 2026, 4, 4 ],
+  "workLogs" : [ ],
+  "paidAmount" : 158.24,
+  "customer" : {
+    "id" : 0,
+    "companyName" : "Gosha",
+    "contactPerson" : "123123",
+    "email" : "koko",
+    "phone" : "123"
+  },
+  "hoursInWorklogs" : 0,
+  "totalAmount" : 158.24,
+  "overpaidAmount" : 0.00,
+  "fullyPaid" : true,
+  "openAmount" : 0.00,
+  "zeroAndEmpty" : false
+} ]

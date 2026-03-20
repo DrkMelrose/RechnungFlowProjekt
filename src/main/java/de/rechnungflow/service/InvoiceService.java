@@ -131,15 +131,19 @@ public class InvoiceService {
             return false;
         }
 
-        BigDecimal total = inv.getTotalAmount();
-        BigDecimal newPaid = inv.getPaidAmount().add(amount);
+        //BigDecimal total = inv.getTotalAmount();
+        //BigDecimal newPaid = inv.getPaidAmount().add(amount);
 
-        boolean fullyPaid = newPaid.compareTo(total) >= 0;
-        inv.setPaidAmount(fullyPaid ? total : newPaid);
-        inv.setStatus(fullyPaid ? InvoiceStatus.PAID : InvoiceStatus.PARTIALLY_PAID);
-
-        saveToFile();
-        return true;
+        //boolean fullyPaid = newPaid.compareTo(total) >= 0;
+        //inv.setPaidAmount(fullyPaid ? total : newPaid);
+        //inv.setStatus(fullyPaid ? InvoiceStatus.PAID : InvoiceStatus.PARTIALLY_PAID);
+        try{
+            inv.pay(amount);
+            saveToFile();
+            return true;
+        } catch (IllegalArgumentException | IllegalStateException e){
+            return false;
+        }
     }
 
     private boolean canPayPartially(Invoice inv, BigDecimal amount){

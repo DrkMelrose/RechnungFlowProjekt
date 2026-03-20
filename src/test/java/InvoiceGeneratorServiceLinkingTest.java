@@ -1,8 +1,11 @@
 import de.rechnungflow.model.*;
 import de.rechnungflow.service.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -10,18 +13,43 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 public class InvoiceGeneratorServiceLinkingTest {
-    @Test
-    public void testCorrectLinking(){
-        //GIVEN
-        ClientService clientService = new ClientService();
-        EmployeeService employeeService = new EmployeeService();
-        CleaningObjectService cleaningObjectService = new CleaningObjectService();
-        WorkLogService workLogService = new WorkLogService();
-        InvoiceService invoiceService = new InvoiceService();
 
-        InvoiceGeneratorService invoiceGeneratorService = new InvoiceGeneratorService(
+    private ClientService clientService;
+    private CleaningObjectService cleaningObjectService;
+    private WorkLogService workLogService;
+    private InvoiceService invoiceService;
+    private InvoiceGeneratorService invoiceGeneratorService;
+
+    @BeforeEach
+    void SetUp() throws Exception{
+
+        Files.writeString(Path.of("worklogs.json"), "[]");
+        Files.writeString(Path.of("clients.json"), "[]");
+        Files.writeString(Path.of("objects.json"), "[]");
+        Files.writeString(Path.of("invoices.json"), "[]");
+
+        clientService = new ClientService();
+        cleaningObjectService = new CleaningObjectService();
+        workLogService = new WorkLogService();
+        invoiceService = new InvoiceService();
+
+        invoiceGeneratorService = new InvoiceGeneratorService(
                 workLogService, cleaningObjectService, clientService, invoiceService
         );
+
+    }
+
+    @Test
+    void testCorrectLinking(){
+        clientService = new ClientService();
+        cleaningObjectService = new CleaningObjectService();
+        workLogService = new WorkLogService();
+        invoiceService = new InvoiceService();
+
+        invoiceGeneratorService = new InvoiceGeneratorService(
+                workLogService, cleaningObjectService, clientService, invoiceService
+        );
+        //GIVEN
 
         Employee emp = new Employee(1, "Maria", "384782", "maria@gmail.com");
 
@@ -52,6 +80,15 @@ public class InvoiceGeneratorServiceLinkingTest {
         workLogService.add(b1);
 
         //When
+        System.out.println("obj1 id = " + obj1.getCleaningObjectId());
+        System.out.println("obj2 id = " + obj2.getCleaningObjectId());
+        System.out.println("all worklogs in service = " + workLogService.getAll());
+        System.out.println("findByObjectAndPeriod for obj1 = " +
+                workLogService.findByObjectAndPeriod(obj1.getCleaningObjectId(), from, to));
+        System.out.println("object found = " +
+                cleaningObjectService.findCleaningObjectById(obj1.getCleaningObjectId()).orElse(null));
+        System.out.println("client found = " +
+                clientService.findClientById(obj1.getClientId()));
         Invoice invoice = invoiceGeneratorService.generateInvoiceForObject(obj1.getCleaningObjectId(), from, to);
 
         //Then
