@@ -53,19 +53,24 @@ public class InvoiceService {
         Invoice inv = findByNumber(number)
                 .orElseThrow(() -> new IllegalArgumentException("Invoice not found: #" + number));
 
-        if (inv.getStatus() == InvoiceStatus.PAID) return false;
-        if (inv.getStatus() == InvoiceStatus.CANCELLED) return false;
+        //if (inv.getStatus() == InvoiceStatus.PAID) return false;
+        //if (inv.getStatus() == InvoiceStatus.CANCELLED) return false;
 
-        BigDecimal total = inv.getTotalAmount();
-        boolean hasItems = inv.getItems() != null && !inv.getItems().isEmpty();
+        //BigDecimal total = inv.getTotalAmount();
+        //boolean hasItems = inv.getItems() != null && !inv.getItems().isEmpty();
 
-        if (!hasItems && total.compareTo(BigDecimal.ZERO) == 0) return false;
-        if (total.compareTo(BigDecimal.ZERO) <= 0) return false;
+        //if (!hasItems && total.compareTo(BigDecimal.ZERO) == 0) return false;
+        //if (total.compareTo(BigDecimal.ZERO) <= 0) return false;
 
-        inv.setPaidAmount(total);
-        inv.setStatus(InvoiceStatus.PAID);
-        saveToFile();
-        return true;
+        //inv.setPaidAmount(total);
+        //inv.setStatus(InvoiceStatus.PAID);
+        try{
+            inv.markAsPaid();
+            saveToFile();
+            return true;
+        } catch (IllegalStateException e){
+            return false;
+        }
     }
 
 

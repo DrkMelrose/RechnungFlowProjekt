@@ -163,6 +163,8 @@ public class Invoice {
         }
     }
 
+
+
     public void cancel(){
         ensureNotPaid();
         if (status == InvoiceStatus.CANCELLED){
@@ -238,6 +240,21 @@ public class Invoice {
             throw new IllegalStateException("Invoice is already paid");
         }
 
+        if(status == InvoiceStatus.CANCELLED){
+            throw new IllegalStateException("Cannot pay cancelled invoice");
+        }
+
+        BigDecimal total = getTotalAmount();
+
+        if (items == null || items.isEmpty()){
+            throw new IllegalStateException("Invoice has no items");
+        }
+
+        if (total == null || total.compareTo(BigDecimal.ZERO) <= 0){
+            throw new IllegalStateException("Total must be positive");
+        }
+
+        this.paidAmount = total;
         this.status = InvoiceStatus.PAID;
     }
 
