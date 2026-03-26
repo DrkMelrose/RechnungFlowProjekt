@@ -35,6 +35,10 @@ public class CliApp {
 
     public void run(){
         invoiceService.loadFromFile();
+        workLogService.loadFromFile();
+        cleaningObjectService.loadFromFile();
+        clientService.loadFromFile();
+        employeeService.loadFromFile();
         io.println("=== RechnungFlow CLI ===");
 
         boolean running = true;
@@ -104,6 +108,7 @@ public class CliApp {
 
         if (to.isBefore(from)){
             io.println("Error: TO date must be after FROM date");
+            return;
         }
 
         Invoice invoice = invoiceGeneratorService.generateInvoiceForObject(objectId, from, to);
@@ -197,38 +202,6 @@ public class CliApp {
         io.println("Work log added. ID: " + wl.getId());
     }
 
-
-    private void createInvoice(){
-        io.println("===== Create Invoice =====");
-
-        String companyName = io.readLine("Company name: ");
-        String contactPerson = io.readLine("Contact person: ");
-        String email = io.readLine("Customer email: ");
-        String phone = io.readLine("Phone: ");
-
-
-        Client client = new Client(companyName, contactPerson, email, phone);
-
-
-        Invoice invoice = invoiceService.createInvoice(client);
-
-        int itemsCount = io.readInt("How many services are provided?", 1,50);
-
-        for (int i = 1; i <= itemsCount; i++){
-            io.println("--- Item " + i + "---");
-            String title = io.readLine("Title: ");
-            BigDecimal hours = io.readBigDecimal("Hours: ");
-            var unitPrice = io.readBigDecimal("Unit price (e.g. 12.50): ");
-
-            InvoiceItem item = new InvoiceItem(title, hours, unitPrice);
-            invoice.addItem(item);
-            invoiceService.saveToFile();
-        }
-
-        io.println("Invoice #" + invoice.getInvoiceNumber() +  "created and saved in memory");
-
-    }
-
     private void listInvoices(){
         io.println("---Invoices---");
         if (invoiceService.isEmpty()){
@@ -245,36 +218,15 @@ public class CliApp {
         int number = io.readInt("Show details (invoice number) or  0 to back: ", 0, Integer.MAX_VALUE);
         if (number != 0){
             Invoice inv = invoiceService.findByNumber(number)
-                    .orElseThrow(() -> new IllegalArgumentException("Invoice not found: #" + number));
+                    .orElse(null);
             if(inv == null){
                 io.println("Invoice #" + number + " not found.");
-            } else {
-                printInvoiceDetails(inv);
+                return;
             }
+
+            printInvoiceDetails(inv);
+
         }
-    }
-
-    private void showInvoice(){
-        if (invoiceService.isEmpty()){
-            io.println("No invoices");
-            return;
-        }
-
-        printInvoiceSummaryHeader();
-        for (Invoice inv : invoiceService.getAll()){
-            printInvoiceSummary(inv);
-        }
-
-        int number = io.readInt("Invoice number to show: ", 1, Integer.MAX_VALUE);
-        Invoice invoice = invoiceService.findByNumber(number)
-                .orElseThrow(() -> new IllegalArgumentException("Invoice not found: #" + number));
-
-        if (invoice==null){
-            io.println("Invoice #" + number + " not found");
-            return;
-        }
-
-        printInvoiceDetails(invoice);
     }
 
     private void printInvoiceSummary(Invoice inv){
