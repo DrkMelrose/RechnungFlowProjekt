@@ -2,10 +2,12 @@ package com.rechnung_flow.RechnungFlowService.service;
 
 import com.rechnung_flow.RechnungFlowService.model.enteties.Employee;
 import com.rechnung_flow.RechnungFlowService.repositories.EmployeeRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class EmployeeService {
     private final EmployeeRepository employeeRepository;
 

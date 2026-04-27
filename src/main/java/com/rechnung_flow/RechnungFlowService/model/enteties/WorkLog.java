@@ -1,9 +1,6 @@
 package com.rechnung_flow.RechnungFlowService.model.enteties;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -13,9 +10,20 @@ import java.util.Locale;
 public class WorkLog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-    Long employeeId;
-    Long objectId;
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
+
+    @ManyToOne
+    @JoinColumn(name = "object_id")
+    private CleaningObject cleaningObject;
+
+    @ManyToOne
+    @JoinColumn(name = "invoice_id")
+    private Invoice invoice;
+
     LocalDate date;
     BigDecimal hours;
     String description;
@@ -25,10 +33,7 @@ public class WorkLog {
 
     }
 
-    public WorkLog(Long id, Long employeeId, Long objectId, LocalDate date, BigDecimal hours, String description, boolean approved){
-        this.id = id;
-        this.employeeId = employeeId;
-        this.objectId = objectId;
+    public WorkLog(Employee employee, CleaningObject cleaningObject, LocalDate date, BigDecimal hours, String description, boolean approved){
         this.date = date;
         this.hours = hours;
         this.description = description;
@@ -39,12 +44,16 @@ public class WorkLog {
         return id;
     }
 
-    public Long getEmployeeId(){
-        return employeeId;
+    public Invoice getInvoice(){
+        return invoice;
     }
 
-    public Long getObjectId(){
-        return objectId;
+    public Employee getEmployee(){
+        return employee;
+    }
+
+    public CleaningObject getObject(){
+        return cleaningObject;
     }
 
     public LocalDate getDate(){
@@ -63,16 +72,20 @@ public class WorkLog {
         return approved;
     }
 
+    public void setInvoice(Invoice invoice){
+        this.invoice = invoice;
+    }
+
     public void setId(Long id){
         this.id = id;
     }
 
-    public void setEmployeeId(Long employeeId){
-        this.employeeId = employeeId;
+    public void setEmployee(Employee employee){
+        this.employee = employee;
     }
 
-    public void setObjectId(Long objectId){
-        this.objectId = objectId;
+    public void setObject(CleaningObject cleaningObject){
+        this.cleaningObject = cleaningObject;
     }
 
     public void setDate(LocalDate date){

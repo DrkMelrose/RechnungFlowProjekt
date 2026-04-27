@@ -1,9 +1,6 @@
 package com.rechnung_flow.RechnungFlowService.model.enteties;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 
@@ -13,7 +10,10 @@ public class CleaningObject {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long clientId;
+    @ManyToOne
+    @JoinColumn(name = "client_id")
+    private Client client;
+
     private String name;
     private String address;
     private BigDecimal hourlyRate;
@@ -24,9 +24,8 @@ public class CleaningObject {
 
     }
 
-    public CleaningObject(Long id, Long clientId, String name, String address, BigDecimal hourlyRate, BigDecimal fixedMonthlyPrice, boolean active){
-        this.id = id;
-        this.clientId = clientId;
+    public CleaningObject(Client client, String name, String address, BigDecimal hourlyRate, BigDecimal fixedMonthlyPrice, boolean active){
+        this.client = client;
         this.name = name;
         this.address = address;
         this.hourlyRate = hourlyRate;
@@ -38,8 +37,8 @@ public class CleaningObject {
         return id;
     }
 
-    public Long getClientId(){
-        return clientId;
+    public Client getClient(){
+        return client;
     }
 
     public String getName(){
@@ -66,8 +65,8 @@ public class CleaningObject {
         this.id = id;
     }
 
-    public void setClientId(Long clientId){
-        this.clientId = clientId;
+    public void setClient(Client client){
+        this.client = client;
     }
 
     public void setName(String name){

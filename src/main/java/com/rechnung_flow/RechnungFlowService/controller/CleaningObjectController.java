@@ -22,7 +22,7 @@ public class CleaningObjectController {
         return cleaningObjectService.getAllCleaningObjects();
     }
 
-    @GetMapping("{/id}")
+    @GetMapping("/{id}")
     public Optional<CleaningObject> getCleaningObjectById(@PathVariable Long id){
         return cleaningObjectService.getCleaningObjectById(id);
     }
