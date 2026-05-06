@@ -1,6 +1,4 @@
 import React from "react";
-import Sidebar from '../components/Sidebar.jsx';
-import Topbar from '../components/Topbar.jsx';
 import KpiCard from '../components/KpiCard.jsx';
 import StatusBadge from "../components/StatusBadge.jsx";
 import { revenueData, invoices, workLogs} from "../data/mockData.js";
@@ -26,9 +24,9 @@ import {
 function Dashboard() {
     return (
         <div className="min-h-screen bg-slate-50 text-slate-900 flex">
-            <Sidebar />
+
             <main className="flex-1 min-w-0">
-                <Topbar />
+
 
                 <section className="p-5 lg:p-7 space-y-6">
                     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">

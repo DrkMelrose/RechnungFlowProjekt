@@ -1,16 +1,35 @@
 import {Bell} from "lucide-react";
 import {MenuIcon} from "lucide-react";
+import Dashboard from "../pages/Dashboard.jsx";
+import {useLocation} from "react-router-dom";
 
-function Topbar() {
+
+const pageTitles = {
+    "/":"Dashboard",
+    "/clients":"Clients",
+    "/employees":"Employees",
+    "/objects":"Objects",
+    "/worklogs":"Worklogs",
+    "/invoices":"Invoices",
+    "/generate-invoice":"Generate Invoice",
+    "/settings":"Settings",
+}
+
+function Topbar({onMenuClick}) {
+    const location = useLocation();
+
+    const title = pageTitles[location.pathname] || Dashboard;
+
     return (
         <header className="h-16 border-b border-slate-200 bg-white/80 backdrop-blur flex items-center justify-between px-5 lg:px-7 sticky top-0 z-10">
             <div className="flex items-center gap-4">
-                <button className="rounded-xl p-2 hover:bg-slate-100 text-slate-600">
-                    <MenuIcon size={20} />
+                <button onClick={onMenuClick}
+                        className="text-slate-500 hover:text-slate-900">
+                    <MenuIcon size={22} />
                 </button>
                 <div>
                     <p className="text-xs text-slate-500">Cleaning business platform</p>
-                    <h1 className="text-lg font-bold text-slate-900">Dashboard</h1>
+                    <h1 className="text-lg font-bold text-slate-900">{title}</h1>
                 </div>
             </div>
 

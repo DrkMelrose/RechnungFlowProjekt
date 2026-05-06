@@ -47,3 +47,29 @@ export const navItems = [
     { label: "Settings", icon: Settings },
 ]
 
+export const clients = [
+    {
+        id: 1,
+        name: "Müller Gebäudereinigung",
+        email: "info@mueller.de",
+        phone: "+49 151 123456",
+        address: "Bonn",
+        status: "Active",
+    },
+    {
+        id: 2,
+        name: "CleanHaus GmbH",
+        email: "kontakt@cleanhaus.de",
+        phone: "+49 152 987654",
+        address: "Köln",
+        status: "Active",
+    },
+    {
+        id: 3,
+        name: "Schmidt Services",
+        email: "office@schmidt.de",
+        phone: "+49 160 555555",
+        address: "Düsseldorf",
+        status: "Inactive",
+    },
+];
