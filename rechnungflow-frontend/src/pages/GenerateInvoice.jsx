@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { clients, workLogs } from "../data/mockData.js";
+import { clients, workLogs as initialWorkLogs} from "../data/mockData.js";
 import { FilePlus2, Search, CheckCircle, Clock } from "lucide-react";
 
 export default function GenerateInvoice() {
+    const [workLogs, setWorklogs] = useState(initialWorkLogs);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedClient, setSelectedClient] = useState("");
     const [searchTerm, setSearchTerm] = useState("");
 
@@ -42,10 +44,16 @@ export default function GenerateInvoice() {
                     </p>
                 </div>
 
-                <button className="flex items-center justify-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-blue-700 transition">
+                <button onClick={()=> setIsModalOpen(true)} className="flex items-center justify-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-blue-700 transition">
                     <FilePlus2 size={16} />
                     Generate Invoice
                 </button>
+                {isModalOpen && (
+                    <WorkLogModal
+                        onClick={()=> setIsModalOpen(false)}
+                        onSave={handleSaveWorkLog}
+                    />
+                )}
             </div>
 
             {/* Filters */}

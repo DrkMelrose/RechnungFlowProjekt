@@ -1,8 +1,11 @@
 import React, { useState } from "react";
-import { employees } from "../data/mockData.js";
+import { employees as initialEmployees} from "../data/mockData.js";
 import { Plus, Search, Pencil, Trash2, UserRound } from "lucide-react";
 
 export default function Employees() {
+    const [employee, setEmployee] = useState(initialEmployees);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
     const [searchTerm, setSearchTerm] = useState("");
 
     const filteredEmployees = employees.filter((employee) =>
@@ -22,10 +25,16 @@ export default function Employees() {
                     </p>
                 </div>
 
-                <button className="flex items-center justify-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-blue-700 transition">
+                <button onClick={()=> setIsModalOpen(true)} className="flex items-center justify-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-blue-700 transition">
                     <Plus size={16} />
                     Add Employee
                 </button>
+                {isModalOpen && (
+                    <EmployeeModal
+                        onClick={()=> setIsModalOpen(false)}
+                        onSave={handleSaveEmployee}
+                    />
+                )}
             </div>
 
             {/* Toolbar */}

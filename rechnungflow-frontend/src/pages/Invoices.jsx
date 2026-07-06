@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { invoices } from "../data/mockData.js";
+import { invoices as initialInvoices} from "../data/mockData.js";
 import {
     Plus,
     Search,
@@ -12,6 +12,8 @@ import {
 } from "lucide-react";
 
 export default function Invoices() {
+    const [invoices, setInvoices] = useState(initialInvoices);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
     const [statusFilter, setStatusFilter] = useState("All");
 
@@ -43,10 +45,16 @@ export default function Invoices() {
                     </p>
                 </div>
 
-                <button className="flex items-center justify-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-blue-700 transition">
+                <button onClick={()=> setIsModalOpen(true)} className="flex items-center justify-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-blue-700 transition">
                     <Plus size={16} />
                     Add Invoice
                 </button>
+                {isModalOpen && (
+                    <InvoiceModal
+                        onClick={()=>setIsModalOpen(false)}
+                        onSave={handleSaveInvoice}
+                    />
+                )}
             </div>
 
             {/* Toolbar */}

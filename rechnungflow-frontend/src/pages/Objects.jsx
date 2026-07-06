@@ -1,8 +1,10 @@
 import React, { useState } from "react";
-import { cleaningObjects } from "../data/mockData.js";
+import { cleaningObjects as initialObjects} from "../data/mockData.js";
 import { Plus, Search, Pencil, Trash2, Building2 } from "lucide-react";
 
 export default function Objects() {
+    const [cleaningObjects, setCleaningObjects] = useState(initialObjects);
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
 
     const filteredObjects = cleaningObjects.filter((object) =>
@@ -22,10 +24,16 @@ export default function Objects() {
                     </p>
                 </div>
 
-                <button className="flex items-center justify-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-blue-700 transition">
+                <button onClick={() => setIsModalOpen(true)} className="flex items-center justify-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-blue-700 transition">
                     <Plus size={16} />
                     Add Object
                 </button>
+                {isModalOpen && (
+                    <ObjectModal
+                        onClose={() => setIsModalOpen(false)}
+                        onSave={handleSaveObject}
+                    />
+                )}
             </div>
 
             {/* Toolbar */}
