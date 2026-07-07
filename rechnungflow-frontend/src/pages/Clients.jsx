@@ -1,15 +1,117 @@
-import React, { useState } from "react";
-import { clients as initialClients} from "../data/mockData.js";
+import React, { useEffect, useState } from "react";
 import { Plus, Search, Pencil, Trash2 } from "lucide-react";
+import ClientModal from "../components/ClientModal.jsx";
+
 
 export default function Clients() {
-    const [clientsList, setClientsList] = useState(initialClients);
+    const [clients, setClients] = useState([]);
+    const [editingClient, setEditingClient] = useState(null);
+    const [clientsList, setClientsList] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [searchTerm, setSearchTerm] = useState("");
 
-    const filteredClients = clients.filter((client) =>
-        client.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    useEffect(() => {
+        fetch("http://localhost:8189/api/clients")
+            .then((response) => {
+            if(!response.ok) {
+                throw new Error("Failed to fetch clients.");
+            }
+            return response.json();
+        })
+            .then((data) => {
+                setClients(data);
+                setLoading(false);
+            })
+            .catch((error) => {
+                setError(error.message);
+                setLoading(false);
+            });
+    }, []);
+
+    async function handleCreateClient(newClient){
+        const response = await fetch("http://localhost:8189/api/clients", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newClient),
+        });
+        const savedClient = await response.json();
+
+        setClients((prevClients) => [...prevClients, savedClient]);
+        setIsModalOpen(false);
+    }
+
+    async function handleUpdateClient(updatedClient){
+        const response = await fetch(
+            `http://localhost:8189/api/clients/${editingClient.id}`,
+            {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(updatedClient),
+            }
+        );
+        const savedClient = await response.json();
+
+        setClients((prevClients) =>
+            prevClients.map((client) =>
+            client.id === savedClient.id ? savedClient : client)
+        );
+        setEditingClient(null);
+        setIsModalOpen(false);
+    }
+
+    async function handleSaveClient(clientData){
+        if (editingClient) {
+            await handleUpdateClient(clientData);
+        } else {
+            await handleCreateClient(clientData);
+        }
+    }
+
+    async function handleDeleteClient(id){
+        const confirmed = window.confirm("Delete this client?");
+
+        if (!confirmed) return;
+
+        const response = await fetch(`http://localhost:8189/api/clients/${id}`, {
+            method: "DELETE",
+        });
+
+        if (!response.ok) {
+            console.error("Failed to delete client.");
+        }
+
+        setClients((prevClients) =>
+            prevClients.filter((client) => client.id !== id)
+        );
+    }
+
+
+
+    if (loading){
+        return <p className="text-slate-500">Loading clients...</p>;
+    }
+
+    if (error){
+        return <p className="text-slate-500">Something went wrong</p>;
+    }
+
+    const filteredClients = clients.filter((client) => {
+        const search = searchTerm.toLowerCase();
+
+        return (
+            (client.companyName || "").toLowerCase().includes(search) ||
+            (client.contactPerson || "").toLowerCase().includes(search) ||
+            (client.email || "").toLowerCase().includes(search) ||
+            (client.phone || "").toLowerCase().includes(search)
+        );
+    })
+        .sort((a, b) => a.id - b.id);
 
     return (
         <div className="space-y-6">
@@ -22,13 +124,21 @@ export default function Clients() {
                     </p>
                 </div>
 
-                <button onClick={()=> setIsModalOpen(true)}  className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-blue-700 transition">
+                <button onClick={()=>{
+                    setEditingClient(null);
+                    setIsModalOpen(true);
+                }}
+                        className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-blue-700 transition">
                     <Plus size={16} />
                     Add Client
                 </button>
                 {isModalOpen && (
                     <ClientModal
-                        onClose={()=> setIsModalOpen(false)}
+                        client={editingClient}
+                        onClose={()=> {
+                            setIsModalOpen(false);
+                            setEditingClient(null);
+                        }}
                         onSave={handleSaveClient}
                     />
                 )}
@@ -63,9 +173,10 @@ export default function Clients() {
                         <thead className="bg-slate-50 text-slate-500">
                         <tr>
                             <th className="text-left px-6 py-4 font-medium">Client</th>
+                            <th className="text-left px-6 py-4 font-medium">Company name    </th>
+                            <th className="text-left px-6 py-4 font-medium">Contact person</th>
                             <th className="text-left px-6 py-4 font-medium">Email</th>
                             <th className="text-left px-6 py-4 font-medium">Phone</th>
-                            <th className="text-left px-6 py-4 font-medium">Address</th>
                             <th className="text-left px-6 py-4 font-medium">Status</th>
                             <th className="text-right px-6 py-4 font-medium">Actions</th>
                         </tr>
@@ -87,10 +198,10 @@ export default function Clients() {
                                         </p>
                                     </div>
                                 </td>
-
+                                <td className="px-6 py-4 font-medium">{client.companyName}</td>
+                                <td className="px-6 py-4">{client.contactPerson}</td>
                                 <td className="px-6 py-4 text-slate-600">{client.email}</td>
                                 <td className="px-6 py-4 text-slate-600">{client.phone}</td>
-                                <td className="px-6 py-4 text-slate-600">{client.address}</td>
 
                                 <td className="px-6 py-4">
                     <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700">
@@ -100,11 +211,15 @@ export default function Clients() {
 
                                 <td className="px-6 py-4">
                                     <div className="flex justify-end gap-2">
-                                        <button className="p-2 rounded-lg text-slate-500 hover:bg-slate-100 hover:text-slate-900">
+                                        <button onClick={()=>{
+                                            setEditingClient(client);
+                                            setIsModalOpen(true);
+                                        }} className="p-2 rounded-lg text-slate-500 hover:bg-slate-100 hover:text-slate-900">
                                             <Pencil size={16} />
                                         </button>
 
-                                        <button className="p-2 rounded-lg text-slate-500 hover:bg-red-50 hover:text-red-600">
+                                        <button onClick={()=> handleDeleteClient(client.id)}
+                                                className="p-2 rounded-lg text-slate-500 hover:bg-red-50 hover:text-red-600">
                                             <Trash2 size={16} />
                                         </button>
                                     </div>
