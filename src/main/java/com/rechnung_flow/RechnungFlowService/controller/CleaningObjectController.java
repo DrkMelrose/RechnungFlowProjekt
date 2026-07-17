@@ -31,4 +31,14 @@ public class CleaningObjectController {
     public CleaningObject createCleaningObject(@RequestBody CleaningObject cleaningObject){
         return cleaningObjectService.createCleaningObject(cleaningObject);
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteCleaningObject(@PathVariable Long id){
+        cleaningObjectService.deleteCleaningObject(id);
+    }
+
+    @PutMapping("/{id}")
+    public CleaningObject updateCleaningObject(@PathVariable Long id, @RequestBody CleaningObject cleaningObject){
+        return cleaningObjectService.updateCleaningObject(id, cleaningObject);
+    }
 }

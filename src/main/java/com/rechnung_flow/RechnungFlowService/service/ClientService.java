@@ -27,4 +27,20 @@ public class ClientService {
     public Client createClient(Client client){
         return clientRepository.save(client);
     }
+
+    public Client updateClient(Long id, Client updatedClient){
+        Client client = clientRepository.findById(id)
+                .orElseThrow(()-> new RuntimeException("Client not found"));
+
+        client.setCompanyName(updatedClient.getCompanyName());
+        client.setContactPerson(updatedClient.getContactPerson());
+        client.setEmail(updatedClient.getEmail());
+        client.setPhone(updatedClient.getPhone());
+
+        return clientRepository.save(client);
+    }
+
+    public void deleteClient(Long id){
+        clientRepository.deleteById(id);
+    }
 }

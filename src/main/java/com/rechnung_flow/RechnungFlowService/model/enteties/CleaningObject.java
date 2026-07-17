@@ -11,7 +11,7 @@ public class CleaningObject {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "client_id")
+    @JoinColumn(name = "client_id", nullable = false)
     private Client client;
 
     private String name;

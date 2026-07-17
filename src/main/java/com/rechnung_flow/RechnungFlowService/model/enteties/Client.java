@@ -1,6 +1,7 @@
 package com.rechnung_flow.RechnungFlowService.model.enteties;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -12,6 +13,7 @@ public class Client {
     private Long id;
 
     @OneToMany(mappedBy = "client")
+    @JsonIgnore
     private List<CleaningObject> objects;
 
     private String companyName;
@@ -50,7 +52,7 @@ public class Client {
         return phone;
     }
 
-    public void setId(Long Id){
+    public void setId(Long id){
         this.id = id;
     }
 

@@ -1,15 +1,149 @@
-import React, { useState } from "react";
-import { cleaningObjects as initialObjects} from "../data/mockData.js";
+import React, { useEffect, useState } from "react";
 import { Plus, Search, Pencil, Trash2, Building2 } from "lucide-react";
+import CleaningObjectModal from "../components/CleaningObjectModal.jsx";
 
 export default function Objects() {
-    const [cleaningObjects, setCleaningObjects] = useState(initialObjects);
+    const [cleaningObjects, setCleaningObjects] = useState([]);
+    const [clients, setClients] = useState([]);
+    const [editingCleaningObject, setEditingCleaningObject] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
-    const filteredObjects = cleaningObjects.filter((object) =>
-        object.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+
+
+    useEffect(() => {
+        fetch(`http://localhost:8189/api/cleaningobjects`)
+            .then((response) => {
+                if (!response.ok){
+                    throw new Error("Failed to fetch objects.");
+                }
+                return response.json();
+            })
+            .then((data) => {
+                setCleaningObjects(data);
+                setLoading(false);
+            })
+            .catch((error) => {
+                setError(error.message);
+                setLoading(false);
+            });
+        fetch("http://localhost:8189/api/clients")
+            .then((response)=> response.json())
+            .then((data)=> setClients(data));
+    }, []);
+
+    async function handleCreateCleaningObject(newCleaningObject) {
+        try {
+            if (!newCleaningObject) {
+                console.error("No cleaning object data received");
+                return
+            }
+            console.log("Sending object: ", newCleaningObject);
+            const response = await fetch("http://localhost:8189/api/cleaningobjects", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(newCleaningObject),
+            });
+
+            const responseText = await response.text();
+
+            if (!response.ok) {
+                console.error(
+                    "Backend error: ",
+                    response.status,
+                    responseText
+                );
+                return;
+            }
+            const savedCleaningObject = responseText
+                ? JSON.parse(responseText)
+                : null;
+
+            if (savedCleaningObject) {
+                setCleaningObjects((previousCleaningObject) => [
+                    ...previousCleaningObject,
+                    savedCleaningObject,
+                ]);
+            }
+            setIsModalOpen(false);
+
+        } catch (error) {
+            console.error("Failed to create cleaning object", error);
+            setError(error.message);
+        }
+    }
+
+
+    async function handleUpdateCleaningObject(updatedCleaningObject){
+        const response = await fetch(`http://localhost:8189/api/cleaningobjects/${editingCleaningObject.id}`,
+            {
+                method: "PUT",
+                headers: {
+                "Content-Type": "application/json",
+                },
+                body: JSON.stringify(updatedCleaningObject),
+            }
+            );
+        const savedCleaningObject = await response.json();
+
+        setCleaningObjects((prevCleaningObject) =>
+            prevCleaningObject.map((cleaningObject) =>
+                cleaningObject.id == savedCleaningObject.id ? savedCleaningObject : cleaningObject
+        ));
+        setEditingCleaningObject(null);
+        setIsModalOpen(false);
+    }
+
+    async function handleSaveCleaningObject(cleaningObjectData){
+        if (editingCleaningObject){
+            await handleUpdateCleaningObject(cleaningObjectData);
+        } else {
+            await handleCreateCleaningObject(cleaningObjectData);
+        }
+    }
+
+    async function handleDeleteCleaningObject(id){
+        const confirmed = window.confirm("Delete this cleaning object?");
+
+        if (!confirmed) return;
+
+        const response = await fetch(`http://localhost:8189/api/cleaningobjects/${id}`, {
+            method: "DELETE",
+        });
+
+        if (!response.ok){
+            console.error("Failed to delete this cleaning object.");
+        }
+
+        setCleaningObjects((prevCleaningObject) =>
+            prevCleaningObject.filter((cleaningObject) => cleaningObject.id !== id)
+        );
+    }
+
+    if (loading){
+        return <p className="text-slate-500">Loading objects...</p>;
+    }
+
+    if (error){
+        return <p className="text-slate-500">Something went wrong</p>;
+    }
+
+    const filteredObjects = cleaningObjects.filter((object) => {
+        const search = searchTerm.toLowerCase();
+
+        return (
+            (object.name || "").toLowerCase().includes(search) ||
+            (object.client?.companyName || "").toLowerCase().includes(search) ||
+            (object.address || "").toLowerCase().includes(search) ||
+            String (object.hourlyRate ?? "").toLowerCase().includes(search) ||
+            String(object.fixedMonthlyPrice ?? "").toLowerCase().includes(search)
+        );
+    })
+        .sort((a,b) => a.id - b.id);
 
     return (
         <div className="space-y-6">
@@ -24,14 +158,23 @@ export default function Objects() {
                     </p>
                 </div>
 
-                <button onClick={() => setIsModalOpen(true)} className="flex items-center justify-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-blue-700 transition">
+                <button onClick={() =>{
+                    setEditingCleaningObject(null)
+                    setIsModalOpen(true)
+                } }
+                        className="flex items-center justify-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-blue-700 transition">
                     <Plus size={16} />
                     Add Object
                 </button>
                 {isModalOpen && (
-                    <ObjectModal
-                        onClose={() => setIsModalOpen(false)}
-                        onSave={handleSaveObject}
+                    <CleaningObjectModal
+                        isOpen={isModalOpen}
+                        onClose={() => {
+                            setIsModalOpen(false)
+                    }}
+                        onSave={handleSaveCleaningObject}
+                        editingCleaningObject={editingCleaningObject}
+                        clients={clients}
                     />
                 )}
             </div>
@@ -67,7 +210,7 @@ export default function Objects() {
                             <th className="text-left px-6 py-4 font-medium">Object</th>
                             <th className="text-left px-6 py-4 font-medium">Client</th>
                             <th className="text-left px-6 py-4 font-medium">Address</th>
-                            <th className="text-left px-6 py-4 font-medium">Type</th>
+                            <th className="text-left px-6 py-4 font-medium">Billing</th>
                             <th className="text-left px-6 py-4 font-medium">Rate</th>
                             <th className="text-left px-6 py-4 font-medium">Status</th>
                             <th className="text-right px-6 py-4 font-medium">Actions</th>
@@ -83,32 +226,45 @@ export default function Objects() {
                                 <td className="px-6 py-4 font-semibold text-slate-900">
                                     {object.name}
                                 </td>
-                                <td className="px-6 py-4 text-slate-600">{object.client}</td>
+                                <td className="px-6 py-4 text-slate-600">{object.client?.companyName || "-"}</td>
                                 <td className="px-6 py-4 text-slate-600">{object.address}</td>
-                                <td className="px-6 py-4 text-slate-600">{object.type}</td>
                                 <td className="px-6 py-4 text-slate-600">
-                                    €{object.hourlyRate}/h
+                                    {Number(object.fixedMonthlyPrice)>0
+                                    ? "Monthly"
+                                    : "Hourly"}
+                                </td>
+                                <td className="px-6 py-4 text-slate-600">
+                                    {Number(object.fixedMonthlyPrice)>0
+                                    ? `€${object.fixedMonthlyPrice}/month`
+                                        : `€${object.hourlyRate}/h`
+                                    }
                                 </td>
 
                                 <td className="px-6 py-4">
                     <span
                         className={`inline-flex px-3 py-1 rounded-full text-xs font-medium ${
-                            object.status === "Active"
+                            object.active
                                 ? "bg-green-50 text-green-700"
                                 : "bg-slate-100 text-slate-500"
                         }`}
                     >
-                      {object.status}
+                      {object.active ? "Active" : "Inactive"}
                     </span>
                                 </td>
 
                                 <td className="px-6 py-4">
                                     <div className="flex justify-end gap-2">
-                                        <button className="p-2 rounded-lg text-slate-500 hover:bg-slate-100 hover:text-slate-900">
+                                        <button onClick={() =>{
+                                            setEditingCleaningObject(object)
+                                            setIsModalOpen(true)
+                                        }}
+                                            className="p-2 rounded-lg text-slate-500 hover:bg-slate-100 hover:text-slate-900">
                                             <Pencil size={16} />
                                         </button>
 
-                                        <button className="p-2 rounded-lg text-slate-500 hover:bg-red-50 hover:text-red-600">
+                                        <button onClick={() => handleDeleteCleaningObject(object.id)
+                                        }
+                                            className="p-2 rounded-lg text-slate-500 hover:bg-red-50 hover:text-red-600">
                                             <Trash2 size={16} />
                                         </button>
                                     </div>
@@ -140,7 +296,7 @@ export default function Objects() {
                                         {object.name}
                                     </h3>
                                     <p className="text-sm text-slate-500 truncate">
-                                        {object.client}
+                                        {object.client?.companyName || "-"}
                                     </p>
                                 </div>
 

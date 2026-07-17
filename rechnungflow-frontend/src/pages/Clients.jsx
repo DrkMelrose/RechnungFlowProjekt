@@ -6,7 +6,6 @@ import ClientModal from "../components/ClientModal.jsx";
 export default function Clients() {
     const [clients, setClients] = useState([]);
     const [editingClient, setEditingClient] = useState(null);
-    const [clientsList, setClientsList] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false)
