@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { workLogs } from "../data/mockData.js";
+import React, {useEffect, useState} from "react";
+import WorkLogsModal from "../components/WorkLogsModal.jsx";
 import {
     Plus,
     Search,
@@ -14,18 +14,170 @@ import {
 export default function WorkLogs() {
     const [searchTerm, setSearchTerm] = useState("");
     const [statusFilter, setStatusFilter] = useState("All");
+    const [workLogs, setWorkLogs] = useState([]);
+    const [employees, setEmployee] = useState([]);
+    const[cleaningObjects, setCleaningObjects] = useState([]);
+    const API_BASE_URL = "http://localhost:8189/api"
+
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [editingWorkLog, setEditingWorkLog] = useState(null);
 
     const filteredWorkLogs = workLogs.filter((log) => {
+        const search = searchTerm.toLowerCase();
+
+        const employeeName =
+            log.employee?.name ?? "";
+
+        const objectName =
+            log.cleaningObject?.name ?? "";
+
+        const clientName =
+            log.cleaningObject?.client?.name ?? "";
+
         const matchesSearch =
-            log.employee.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            log.object.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            log.client.toLowerCase().includes(searchTerm.toLowerCase());
+            employeeName.toLowerCase().includes(search) ||
+            objectName.toLowerCase().includes(search) ||
+            clientName.toLowerCase().includes(search);
 
-        const matchesStatus =
-            statusFilter === "All" || log.status === statusFilter;
-
-        return matchesSearch && matchesStatus;
+        return matchesSearch;
     });
+
+    const handleOpenEditModal = (workLog) => {
+        setEditingWorkLog(workLog);
+        setIsModalOpen(true);
+    }
+
+    const handleDeleteWorkLog = async (id) => {
+        const shouldDelete = window.confirm("Are you sure you want to delete?");
+
+        if (!shouldDelete){
+            return
+        }
+
+        try{
+            setError("");
+
+            const response = await fetch(`${API_BASE_URL}/worklogs/${id}`,
+                {method: "DELETE"});
+
+            if (!response.ok){
+                throw new Error("Work log could not be deleted");
+            }
+
+            setWorkLogs((currentWorkLog) =>
+                currentWorkLog.filter((worklog) => worklog.id !== id)
+            );
+
+
+        } catch (error) {
+            console.error("Error while deleting worklog", error);
+            setError("WorkLog could not be deleted");
+        }
+    };
+
+    useEffect(() => {
+        loadPageData();
+    }, []);
+
+    const loadPageData = async() => {
+        try{
+            setIsLoading(true);
+            setError(null);
+
+            const [
+                workLogsResponse,
+                employeesResponse,
+                cleaningObjectResponse
+            ] = await Promise.all([
+                fetch(`${API_BASE_URL}/worklogs`),
+                fetch(`${API_BASE_URL}/employees`),
+                fetch(`${API_BASE_URL}/cleaningobjects`),
+            ]);
+
+            console.log("WorkLogs:", workLogsResponse.status);
+            console.log("Employees:", employeesResponse.status);
+            console.log("CleaningObjects:", cleaningObjectResponse.status);
+
+            if (!employeesResponse.ok){
+                throw new Error("Error fetching employee.");
+            }
+
+            if (!cleaningObjectResponse.ok){
+                throw new Error("Error fetching cleaningObjects.");
+            }
+
+            const employeeData = await employeesResponse.json();
+            const cleaningObjectsData = await cleaningObjectResponse.json();
+
+            console.log("EMPLOYEES DATA:", employeeData);
+            console.log("OBJECTS DATA:", cleaningObjectsData);
+
+            setEmployee(employeeData);
+            setCleaningObjects(cleaningObjectsData);
+
+            if (workLogsResponse.ok){
+                const workLogsData =
+                    await workLogsResponse.json();
+                setWorkLogs(workLogsData);
+            } else {
+                console.error("Worklog could not be loaded",
+                    workLogsResponse.status
+                );
+                setWorkLogs([]);
+            }
+
+        } catch (error){
+            console.error("Error by loading: ", error);
+            setError(error.message);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const handleOpenCreateModal = () => {
+        setEditingWorkLog(null);
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setEditingWorkLog(null);
+        setIsModalOpen(false);
+    }
+
+    const handleSubmit = async (worklogData) => {
+        try {
+            setError(null);
+
+            const isEditing = editingWorkLog !== null;
+
+            const url = isEditing
+            ?`${API_BASE_URL}/worklogs/${editingWorkLog.id}`
+                : `${API_BASE_URL}/worklogs`;
+
+            const response = await fetch(url, {
+                method: isEditing ? "PUT" : "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(worklogData),
+            });
+
+
+            if (!response.ok) {
+                throw new Error("Work log could not be saved")
+            }
+
+            await loadPageData()
+            handleCloseModal();
+
+        } catch (error) {
+            console.error("Error saving worklog", error);
+            setError(error.message);
+        }
+    };
 
     return (
         <div className="space-y-6">
@@ -38,11 +190,23 @@ export default function WorkLogs() {
                     </p>
                 </div>
 
-                <button className="flex items-center justify-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-blue-700 transition">
+                <button className="flex items-center justify-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-xl text-sm font-medium hover:bg-blue-700 transition"
+                onClick={handleOpenCreateModal}>
                     <Plus size={16} />
                     Add Work Log
                 </button>
             </div>
+
+            {isModalOpen && (
+                <WorkLogsModal
+                    isOpen={isModalOpen}
+                workLog={editingWorkLog}
+                employees={employees}
+                cleaningObjects={cleaningObjects}
+                onClose={handleCloseModal}
+                onSave={handleSubmit}
+                />
+            )}
 
             {/* Toolbar */}
             <div className="bg-white border border-slate-200 rounded-2xl p-4 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -106,16 +270,16 @@ export default function WorkLogs() {
 
                                 <td className="px-6 py-4">
                                     <p className="font-semibold text-slate-900">
-                                        {log.employee}
+                                        {log.employee?.name}
                                     </p>
                                     <p className="text-xs text-slate-500">Log #{log.id}</p>
                                 </td>
 
-                                <td className="px-6 py-4 text-slate-600">{log.object}</td>
-                                <td className="px-6 py-4 text-slate-600">{log.client}</td>
+                                <td className="px-6 py-4 text-slate-600">{log.cleaningObject?.name}</td>
+                                <td className="px-6 py-4 text-slate-600">{log.cleaningObject?.client?.name}</td>
 
                                 <td className="px-6 py-4 font-semibold text-slate-900">
-                                    {log.hours.toFixed(1)} h
+                                    {Number(log.hours).toFixed(1)} h
                                 </td>
 
                                 <td className="px-6 py-4">
@@ -124,11 +288,15 @@ export default function WorkLogs() {
 
                                 <td className="px-6 py-4">
                                     <div className="flex justify-end gap-2">
-                                        <button className="p-2 rounded-lg text-slate-500 hover:bg-slate-100 hover:text-slate-900">
+                                        <button
+                                            onClick = {() => handleOpenEditModal(log)}
+                                            className="p-2 rounded-lg text-slate-500 hover:bg-slate-100 hover:text-slate-900">
                                             <Pencil size={16} />
                                         </button>
 
-                                        <button className="p-2 rounded-lg text-slate-500 hover:bg-red-50 hover:text-red-600">
+                                        <button
+                                            onClick = {() => handleDeleteWorkLog(log.id)}
+                                            className="p-2 rounded-lg text-slate-500 hover:bg-red-50 hover:text-red-600">
                                             <Trash2 size={16} />
                                         </button>
                                     </div>
@@ -157,11 +325,11 @@ export default function WorkLogs() {
 
                                 <div className="min-w-0 flex-1">
                                     <h3 className="font-semibold text-slate-900 truncate">
-                                        {log.object}
+                                        {log.cleaningObject?.name}
                                     </h3>
 
                                     <p className="text-sm text-slate-500 truncate">
-                                        {log.employee}
+                                        {log.employee?.name}
                                     </p>
                                 </div>
 
@@ -183,16 +351,20 @@ export default function WorkLogs() {
 
                                 <div className="col-span-2">
                                     <p className="text-slate-400">Client</p>
-                                    <p className="text-slate-700 truncate">{log.client}</p>
+                                    <p className="text-slate-700 truncate">{log.cleaningObject?.client?.name}</p>
                                 </div>
                             </div>
 
                             <div className="mt-4 flex justify-end gap-2">
-                                <button className="p-2 rounded-lg text-slate-500 hover:bg-slate-100">
+                                <button className="p-2 rounded-lg text-slate-500 hover:bg-slate-100"
+                                        onClick = {() => handleOpenEditModal(log)}
+                                >
                                     <Pencil size={16} />
                                 </button>
 
-                                <button className="p-2 rounded-lg text-slate-500 hover:bg-red-50 hover:text-red-600">
+                                <button className="p-2 rounded-lg text-slate-500 hover:bg-red-50 hover:text-red-600"
+                                      onClick = {() => handleDeleteWorkLog(log.id)}
+                                >
                                     <Trash2 size={16} />
                                 </button>
                             </div>
